@@ -1,0 +1,189 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+@import "tailwindcss";
+
+* {
+  font-family: "Outfit", sans-serif;
+}
+
+::-webkit-scrollbar {
+  display: none;
+
+}
+
+@theme {
+  --color-background: #4E342E;
+  --color-primary: #333333;
+  --color-secondary: #1C1C1C;
+  --color-accent: #8A9A5B;
+  --text-primary: #2D3436;
+  --text-secondary: #636E72;
+  --text: #6B7280;
+  --color-background-2: #d3c8bb;
+}
+
+:root {
+  --color-background: #4E342E;
+  --card-background: #ffffff;
+  /* default card color */
+}
+
+/* Marquee styles */
+.marquee {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-background-2);
+}
+
+.marquee-box {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: marquee-scroll 30s linear infinite;
+}
+
+.marquee:hover .marquee-box {
+  animation-play-state: paused;
+}
+
+.marquee-item {
+  display: flex;
+  align-items: center;
+  color: var(--text-primary);
+}
+
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Gradient edges for mask effect */
+.gradient-edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 120px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.gradient-edge:first-of-type {
+  left: 0;
+  background: linear-gradient(90deg, var(--color-background) 20%, rgba(245, 243, 239, 0) 100%);
+}
+
+.gradient-edge:last-of-type {
+  right: 0;
+  background: linear-gradient(270deg, var(--color-background) 20%, rgba(245, 243, 239, 0) 100%);
+}
+
+/* Reusable card styles */
+.card {
+  background-color: var(--card-background);
+  border-radius: 12px;
+  transition: box-shadow 200ms ease, transform 200ms ease;
+}
+
+.card-elevate {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.card-elevate:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+  transform: translateY(-2px);
+}
+
+/* Blog card uses page background tone */
+.blog-card {
+  background-color: var(--card-background);
+  border-radius: 12px;
+}
+
+/* Rich text styles */
+.rich-text {
+  font-size: 15px;
+  color: var(--text-primary);
+}
+
+.rich-text p {
+  margin-bottom: 16px;
+  color: var(--text-primary);
+}
+
+.rich-text h1 {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--color-primary) !important;
+  margin: 32px 0;
+}
+
+.rich-text h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-secondary) !important;
+  margin: 24px 0;
+}
+
+.rich-text h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-accent) !important;
+  margin: 20px 0;
+}
+
+.rich-text h4 {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-primary) !important;
+  margin: 16px 0;
+}
+
+.rich-text h5 {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-secondary) !important;
+  margin: 12px 0;
+}
+
+.rich-text h6 {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-secondary) !important;
+  margin: 8px 0;
+}
+
+.rich-text strong {
+  font-weight: 700;
+}
+
+.rich-text ol {
+  margin-left: 30px;
+  list-style-type: decimal;
+}
+
+.rich-text ul {
+  margin-left: 30px;
+  list-style-type: disc;
+}
+
+.rich-text li {
+  margin-bottom: 8px;
+}
+
+.rich-text a {
+  color: var(--color-secondary);
+  text-decoration: none;
+}
+
+.rich-text a:hover {
+  color: var(--color-primary);
+}
+
+/* Global span color across the app */
+span {
+  color: #4E342E !important;
+}
