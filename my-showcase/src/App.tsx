@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom"
 import Index from "./page/index";
 import About from "./page/About";
 import Services from "./page/Service";
+import ServiceDetail from "./page/ServiceDetail";
 import Portfolio from "./page/Portfolio";
 import Contact from "./page/Contact";
 import NotFound from "./page/NotFound";
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
   { path: "/", element: <Index /> },
   { path: "/about", element: <About /> },
   { path: "/services", element: <Services /> },
+  { path: "/services/:slug", element: <ServiceDetail /> },
   { path: "/portfolio", element: <Portfolio /> },
   { path: "/blog/:id", element: <BlogDetail /> },
   { path: "/contact", element: <Contact /> },

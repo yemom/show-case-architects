@@ -12,10 +12,18 @@ const Footer = () => {
                     {/* Company Info */}
                     <div className="space-y-6">
                         <div className="flex items-center space-x-2">
-                            <div className="w-8 h-8 bg-white/20 rounded-md flex items-center justify-center overflow-hidden">
-                                <img src={assets.logo} alt="Studio 21 Logo" className="w-6 h-6 object-contain" />
+                            <div className="">
+                                <Link to="/" className="flex items-center space-x-3">
+                                    <img
+                                        src={assets.logo}
+                                        alt="Logo"
+                                        className="h-8 w-auto select-none"
+                                        draggable={false}
+                                    />
+
+                                </Link>
                             </div>
-                            <span className="text-xl font-light tracking-wide text-white"> Studio 21</span>
+
                         </div>
                         <p className="text-[var(--color-background-2)] architectural-body">
                             Creating innovative architectural solutions that blend sustainability,
@@ -29,7 +37,7 @@ const Footer = () => {
                                 <Twitter className="h-4 w-4" />
                             </Button>
                             <Button variant="ghost" size="sm" className="text-[var(--color-background-2)] hover:text-accent hover:bg-white/10">
-                                <Instagram className="h-4 w-4" />
+                                <Instagram className="h-4 w-4" href="https://www.instagram.com/architectsstudio21?utm_source=qr&igsh=MTNrZGM4ZjR3cnd5ZA==" />
                             </Button>
                             <Button variant="ghost" size="sm" className="text-[var(--color-background-2)] hover:text-accent hover:bg-white/10">
                                 <Linkedin className="h-4 w-4" />
@@ -86,17 +94,17 @@ const Footer = () => {
                             <div className="flex items-start space-x-3">
                                 <MapPin className="h-5 w-5 text-accent mt-1" />
                                 <div className="text-[var(--color-background-2)]">
-                                    <div>123 Architecture Ave</div>
-                                    <div>Design District, NY 10001</div>
+                                    <div>Addis Ababa, Ethiopia</div>
+                                    <div>Gurd Shola Senper bld</div>
                                 </div>
                             </div>
                             <div className="flex items-center space-x-3">
                                 <Phone className="h-5 w-5 text-accent" />
-                                <span className="text-[var(--color-background-2)]">+1 (555) 123-4567</span>
+                                <span className="text-[var(--color-background-2)]">+251-996-519-900</span>
                             </div>
                             <div className="flex items-center space-x-3">
                                 <Mail className="h-5 w-5 text-accent" />
-                                <span className="text-[var(--color-background-2)]">hello@architecturestudio.com</span>
+                                <span className="text-[var(--color-background-2)]">Studio21.architectsanddesign@gmail.com</span>
                             </div>
                         </div>
                     </div>

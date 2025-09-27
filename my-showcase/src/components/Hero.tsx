@@ -12,27 +12,27 @@ const Hero = () => {
                     alt="Modern architecture showcase"
                     className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 to-transparent" />
+                <div className="absolute inset-0 bg-black/50" />
             </div>
 
             {/* Hero Content */}
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16">
                 <div className="grid lg:grid-cols-2 gap-12 items-center">
-                    <div className="space-y-8 animate-fade-in">
+                    <div className="space-y-8 animate-fade-in text-white">
                         {/* Badge */}
                         <div className="inline-flex items-center px-4 py-2 rounded-full bg-accent/10 border border-accent/20">
                             <span className="text-accent text-sm font-medium">Award-Winning Architecture</span>
                         </div>
 
                         {/* Main Heading */}
-                        <h1 className="text-5xl md:text-6xl lg:text-7xl font-light leading-tight architectural-heading">
+                        <h1 className="text-5xl md:text-6xl lg:text-7xl font-light leading-tight architectural-heading text-white">
                             Designing
                             <span className="block text-accent">Tomorrow's</span>
                             Spaces
                         </h1>
 
                         {/* Description */}
-                        <p className="text-xl text-muted-foreground architectural-body max-w-lg">
+                        <p className="text-xl text-white/80 architectural-body max-w-lg">
                             We create innovative architectural solutions that blend sustainability,
                             functionality, and aesthetic excellence to shape the future of living spaces.
                         </p>
@@ -57,15 +57,15 @@ const Hero = () => {
                         <div className="grid grid-cols-3 gap-8 pt-8 border-t border-border">
                             <div>
                                 <div className="text-2xl font-light text-accent">150+</div>
-                                <div className="text-sm text-muted-foreground">Projects Completed</div>
+                                <div className="text-sm text-white/70">Projects Completed</div>
                             </div>
                             <div>
                                 <div className="text-2xl font-light text-accent">25+</div>
-                                <div className="text-sm text-muted-foreground">Awards Won</div>
+                                <div className="text-sm text-white/70">Awards Won</div>
                             </div>
                             <div>
                                 <div className="text-2xl font-light text-accent">12</div>
-                                <div className="text-sm text-muted-foreground">Years Experience</div>
+                                <div className="text-sm text-white/70">Years Experience</div>
                             </div>
                         </div>
                     </div>
@@ -74,13 +74,13 @@ const Hero = () => {
                     <div className="hidden lg:block animate-slide-up">
                         <div className="relative">
                             <div className="absolute -inset-4 bg-gradient-accent rounded-lg blur-2xl opacity-20 animate-parallax" />
-                            <div className="relative bg-card border border-border rounded-lg p-8 shadow-architectural">
+                            <div className="relative bg-card/30 backdrop-blur-sm border border-white/20 rounded-lg p-8 shadow-architectural text-white">
                                 <h3 className="text-xl font-light mb-4">Latest Project</h3>
-                                <p className="text-muted-foreground mb-4">
+                                <p className="text-white/80 mb-4">
                                     Sustainable residential complex featuring innovative green building techniques
                                 </p>
                                 <Link to="/portfolio">
-                                    <Button variant="outline" size="sm">
+                                    <Button variant="outline" size="sm" className="text-white border-white/30 hover:bg-white/10">
                                         Learn More
                                         <ArrowRight className="ml-2 h-3 w-3" />
                                     </Button>

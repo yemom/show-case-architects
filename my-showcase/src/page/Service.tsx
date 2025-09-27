@@ -11,53 +11,15 @@ import {
     ArrowRight,
     CheckCircle
 } from "lucide-react";
+import { services as servicesData } from "@/assets/services";
 import { Link } from "react-router-dom";
 
 const Services = () => {
-    const services = [
-        {
-            icon: Building,
-            title: "Architectural Design",
-            description: "Complete architectural solutions from concept to construction, specializing in modern, sustainable design.",
-            features: ["Conceptual Design", "Technical Drawings", "3D Visualization", "Permit Processing"],
-            price: "Starting at $15,000",
-        },
-        {
-            icon: Home,
-            title: "Residential Design",
-            description: "Custom home design that reflects your lifestyle and maximizes comfort, functionality, and value.",
-            features: ["Custom Home Design", "Renovation Planning", "Space Optimization", "Interior Layout"],
-            price: "Starting at $8,000",
-        },
-        {
-            icon: Palette,
-            title: "Interior Design",
-            description: "Transform your spaces with thoughtful interior design that balances aesthetics and functionality.",
-            features: ["Space Planning", "Material Selection", "Furniture Design", "Color Consultation"],
-            price: "Starting at $5,000",
-        },
-        {
-            icon: Box,
-            title: "3D Modeling & Visualization",
-            description: "Photorealistic renderings and virtual walkthroughs to help you visualize your project before construction.",
-            features: ["3D Renderings", "Virtual Tours", "Animation", "VR Experiences"],
-            price: "Starting at $2,500",
-        },
-        {
-            icon: Wrench,
-            title: "Renovation & Restoration",
-            description: "Breathe new life into existing spaces while preserving architectural integrity and character.",
-            features: ["Historic Restoration", "Modern Updates", "Structural Analysis", "Code Compliance"],
-            price: "Starting at $10,000",
-        },
-        {
-            icon: Users,
-            title: "Consulting Services",
-            description: "Expert architectural consultation for planning, feasibility studies, and project development.",
-            features: ["Feasibility Studies", "Design Review", "Code Analysis", "Project Planning"],
-            price: "Starting at $200/hour",
-        },
-    ];
+    const IconMap = { Building, Home, Palette, Box, Wrench, Users } as const;
+    const services = servicesData.map((s) => ({
+        ...s,
+        icon: IconMap[s.icon],
+    }));
 
     const process = [
         {
@@ -128,10 +90,12 @@ const Services = () => {
                                         <div className="pt-4 border-t border-border">
                                             <div className="flex items-center justify-between">
                                                 <span className="text-lg font-light text-accent">{service.price}</span>
-                                                <Button variant="ghost" size="sm" className="group">
-                                                    Learn More
-                                                    <ArrowRight className="ml-2 h-3 w-3 group-hover:translate-x-1 transition-transform" />
-                                                </Button>
+                                                <Link to={`/services/${service.slug}`}>
+                                                    <Button variant="ghost" size="sm" className="group">
+                                                        Learn More
+                                                        <ArrowRight className="ml-2 h-3 w-3 group-hover:translate-x-1 transition-transform" />
+                                                    </Button>
+                                                </Link>
                                             </div>
                                         </div>
                                     </CardContent>

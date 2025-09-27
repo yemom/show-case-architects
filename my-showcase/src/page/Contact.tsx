@@ -108,7 +108,7 @@ const Contact: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="py-16 bg-background-2">
+                <div className="py-16 bg-architectural-light">
                     <div className="max-w-6xl mx-auto px-8 sm:px-20 xl:px-32">
                         <div className="grid lg:grid-cols-2 gap-12 bg-background-2">
                             {/* Contact Form */}

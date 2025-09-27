@@ -7,21 +7,21 @@ import { Link } from "react-router-dom";
 const About = () => {
     const team = [
         {
-            name: "Sarah Chen",
+            name: "Yohanes Lakew",
             role: "Lead Architect",
-            image: "https://images.unsplash.com/photo-1494790108755-2616b612b167?w=300&h=300&fit=crop&crop=face",
+            image: "",
             bio: "20+ years of experience in sustainable architecture and urban planning.",
         },
         {
             name: "Michael Rodriguez",
             role: "Design Director",
-            image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face",
+            image: "",
             bio: "Specializes in innovative commercial and residential design solutions.",
         },
         {
             name: "Emma Thompson",
             role: "Project Manager",
-            image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face",
+            image: "e",
             bio: "Expert in project coordination and client relationship management.",
         },
     ];
