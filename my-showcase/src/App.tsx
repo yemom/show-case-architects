@@ -34,6 +34,8 @@ const router = createBrowserRouter([
   { path: "/contact", element: <Contact /> },
   // Legacy login redirect
   { path: "/login", element: <Navigate to="/admin/login" replace /> },
+  // Legacy/public signup redirect
+  { path: "/signup", element: <Navigate to="/admin/signup" replace /> },
   // Admin auth
   { path: "/admin/login", element: <AdminLogin /> },
   { path: "/admin/signup", element: <AdminSignup /> },

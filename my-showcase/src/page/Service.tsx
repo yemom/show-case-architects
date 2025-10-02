@@ -12,11 +12,15 @@ import {
     CheckCircle
 } from "lucide-react";
 import { services as servicesData } from "@/assets/services";
+import type { ServiceItem } from "@/assets/services";
+import type { LucideIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Services = () => {
-    const IconMap = { Building, Home, Palette, Box, Wrench, Users } as const;
-    const services = servicesData.map((s) => ({
+    const IconMap = { Building, Home, Palette, Box, Wrench, Users } satisfies Record<ServiceItem["icon"], LucideIcon>;
+
+    type MappedService = Omit<ServiceItem, "icon"> & { icon: LucideIcon };
+    const services: MappedService[] = servicesData.map((s) => ({
         ...s,
         icon: IconMap[s.icon],
     }));
