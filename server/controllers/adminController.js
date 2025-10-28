@@ -18,24 +18,23 @@ export const adminSignup = async (req, res) => {
     if (!email || !password) {
       return res.status(400).json({ success: false, message: 'Email & password required' });
     }
-
-    // Allow signup only for the first admin
-    const existingCount = await Admin.countDocuments();
-    if (existingCount > 0) {
-      return res.status(403).json({ success: false, message: 'Signup disabled: admin already exists' });
-    }
-
-    const exists = await Admin.findOne({ email });
+    // Do NOT auto-create or auto-approve admins via this endpoint.
+    // Instead create a pending admin request that must be approved by a super admin.
+    const exists = await Admin.findOne({ email: String(email).trim().toLowerCase() });
     if (exists) {
-      return res.status(409).json({ success: false, message: 'Admin already exists' });
+      // If an account exists and is approved, reject; if it exists but pending, refresh password and keep pending
+      if (exists.isApproved) {
+        return res.status(409).json({ success: false, message: 'Admin already exists' });
+      }
+      // Update password for pending request
+      exists.password = await bcrypt.hash(password, 10);
+      await exists.save();
+      return res.json({ success: true, message: 'Your admin access request is pending approval by a super admin.' });
     }
 
     const hash = await bcrypt.hash(password, 10);
-    // First admin becomes super and approved automatically
-    const admin = await Admin.create({ email, password: hash, role: 'super', isApproved: true });
-    // First admin is SUPER and approved -> issue a super token
-    const token = jwt.sign({ role: 'super', email: admin.email, id: admin._id }, JWT_SECRET, { expiresIn: '7d' });
-    return res.json({ success: true, message: 'Signup successful', token });
+    await Admin.create({ email: String(email).trim().toLowerCase(), password: hash, role: 'admin', isApproved: false });
+    return res.json({ success: true, message: 'Admin access request submitted. A super admin must approve your account.' });
   } catch (err) {
     console.error('adminSignup error:', err);
     res.status(500).json({ success: false, message: 'Server error' });
@@ -134,7 +133,7 @@ export const requestAdminAccess = async (req, res) => {
     // If no admins exist yet, instruct to use /signup for the first super admin
     const count = await Admin.countDocuments();
     if (count === 0) {
-      return res.status(400).json({ success: false, message: 'No super admin exists. Use /api/admin/signup to create the first super admin.' });
+      return res.status(400).json({ success: false, message: 'No super admin exists. Use /api/admin/signup to submit the initial admin access request.' });
     }
 
     const existing = await Admin.findOne({ email });
@@ -290,7 +289,8 @@ export const addBlog = async (req, res) => {
 
 export const getAllBlogs = async (req, res) => {
     try {
-      const blogs = await Blog.find({ isPublished: true });
+  // Admins should be able to see all blogs, including drafts
+  const blogs = await Blog.find();
   
       const BASE_URL = process.env.BASE_URL || 'http://127.0.0.1:3000';
   

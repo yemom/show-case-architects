@@ -1,8 +1,8 @@
 import express from 'express';
 import path from 'path';
 import multer from 'multer';
-import { addBlog, getAllBlogs} from '../controllers/blogController.js';
-import { adminLogin, adminSignup,  getDashboard, getAllComments, deleteCommentById, ApprovedCommentById, listAdmins, approveAdmin, requestAdminAccess, deleteAdmin, forgotPassword, resetPassword, forgotPasswordCode, resetPasswordWithCode } from '../controllers/adminController.js';
+import { addBlog } from '../controllers/blogController.js';
+import { adminLogin, adminSignup,  getDashboard, getAllComments, deleteCommentById, ApprovedCommentById, listAdmins, approveAdmin, requestAdminAccess, deleteAdmin, forgotPassword, resetPassword, forgotPasswordCode, resetPasswordWithCode, getAllBlogs as adminGetAllBlogs } from '../controllers/adminController.js';
 import auth from '../midleware/auth.js';
 import Comment from '../models/comment.js';
 
@@ -42,8 +42,8 @@ router.post(
 );
 
 
-// Get all blogs for frontend (public)
-router.get('/blogs', getAllBlogs);
+// Get all blogs for admin (includes drafts) - protected
+router.get('/blogs', auth, adminGetAllBlogs);
 
 // Admin login
 router.post('/login', adminLogin);

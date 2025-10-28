@@ -1,3 +1,4 @@
+
 import express from "express";
 import { addBlog, addComment, deleteBlog, generateContent, getAllBlogs, getBlogById, getComments, onTogglePublish } from '../controllers/blogController.js'
 import upload from "../midleware/multter.js";
@@ -26,6 +27,7 @@ blogRoute.get("/comment/:blogId", getComments);
 blogRoute.delete("/delete", auth, deleteBlog);
 blogRoute.post("/toggle-publish", auth, onTogglePublish);
 blogRoute.get("/:blogId", getBlogById);
-blogRoute.post("/generate-content", auth, generateContent);
+ // Accept optional image/video when generating content; reuse uploadBlogMedia to parse multipart
+ blogRoute.post("/generate-content", auth, uploadBlogMedia, generateContent);
 
 export default blogRoute;

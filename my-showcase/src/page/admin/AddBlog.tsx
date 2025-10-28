@@ -51,11 +51,13 @@ const AddBlog: React.FC = () => {
         if (!title.trim()) return toast.error('Enter a title first');
         try {
             setLoadingAI(true);
-            const { data } = await axios.post(
-                '/api/blog/generate-content',
-                { prompt: title },
-                { headers: { Authorization: `Bearer ${token}` } }
-            );
+            const formData = new FormData();
+            formData.append('prompt', title);
+            if (image) formData.append('image', image);
+
+            const { data } = await axios.post('/api/blog/generate-content', formData, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
             if (data.success && quillRef.current) {
                 const parsed = marked.parse(data.content || '');
                 if (parsed instanceof Promise) {

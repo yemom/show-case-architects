@@ -9,19 +9,19 @@ const About = () => {
         {
             name: "Yohanes Lakew",
             role: "Lead Architect",
-            image: "",
+            image: "../assets/john.png",
             bio: "20+ years of experience in sustainable architecture and urban planning.",
         },
         {
-            name: "Michael Rodriguez",
+            name: "Elshadai Begashaw",
             role: "Design Director",
-            image: "",
+            image: "../assets/john.png",
             bio: "Specializes in innovative commercial and residential design solutions.",
         },
         {
-            name: "Emma Thompson",
+            name: "Ftsum Begashaw",
             role: "Project Manager",
-            image: "e",
+            image: "../assets/john.png",
             bio: "Expert in project coordination and client relationship management.",
         },
     ];
