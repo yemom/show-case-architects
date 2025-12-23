@@ -1,4 +1,8 @@
+import dotenv from 'dotenv';
 import ImageKit from "imagekit";
+
+// Ensure environment variables are loaded
+dotenv.config();
 
 var imageKit = new ImageKit({
     publicKey: process.env.IMAGEKIT_PUBLIC_KEY,

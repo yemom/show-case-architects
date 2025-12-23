@@ -1,5 +1,5 @@
 import express from 'express';
-import 'dotenv/config';
+import dotenv from 'dotenv';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import fs from 'fs';
@@ -7,10 +7,14 @@ import connectDB from './configs/db.js';
 import adminRouter from './route/adminRoute.js';
 import blogRoute from './route/blogRoute.js';
 import path from 'path';
-import dotenv from 'dotenv';
 
-
-dotenv.config();
+// Load environment variables
+const envResult = dotenv.config();
+if (envResult.error) {
+    console.error("Error loading .env file:", envResult.error);
+} else {
+    console.log(`Loaded ${Object.keys(envResult.parsed || {}).length} environment variables from .env`);
+}
 
 
 const app = express();

@@ -2,7 +2,7 @@ import React from "react";
 
 type Props = {
   className?: string;
-  full?: boolean; // when true, centers in a min-height area
+  full?: boolean; 
 };
 
 const Loader: React.FC<Props> = ({ className = "", full = true }) => {
