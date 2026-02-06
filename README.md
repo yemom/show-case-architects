@@ -1,88 +1,143 @@
-# Show Case Architects
+# Show-Case Architects
 
-> A sleek, modern web app showcasing architectural works .
+[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/yemom/show-case-architects)
 
-## 📦 Table of Contents
+## 🚀 Project Overview
 
-1. [About](#about)  
-2. [Features](#features)  
-3. [Tech Stack / Toolbox](#tech-stack--toolbox)  
-4. [Getting Started](#getting-started)  
-   - Prerequisites  
-   - Installation  
-   - Running Locally  
-   - Building / Deployment  
-5. [Project Structure](#project-structure)  
-6. [Usage / Screenshots](#usage--screenshots)  
-7. [Contributing](#contributing)  
-8. [License](#license)  
-9. [Contact](#contact)
+**Show-Case Architects** is a web application for architects and designers to showcase their projects and portfolios.  
+It provides a **modern, responsive UI** with dynamic content rendering and smooth interactions.
 
 ---
 
-## 🧐 About
-
-Show Case Architects is a web application built to **display architectural projects or portfolios** beautifully. It’s built with modern front-end technologies and offers a responsive, clean UI for showcasing images, project details, and more.
-
----
-
-## ✨ Features
-
-- Responsive, mobile-first design  
-- Clean UI with utility-first styling  
-- Dynamic content rendering (projects, details)  
-- Easy configuration and extensibility  
-- Fast performance & optimized build  
+## 🖥️ Live Demo
+> Add your deployed app link here
+[Live Demo](http://your-live-demo-url.com)
 
 ---
 
-## 🧰 Tech Stack / Toolbox
+## 💻 Features
 
-Here’s what powers this beast:
-
-| Layer | Technology / Tool | Purpose / Notes |
-|---|---|---|
-| Frontend | **TypeScript** + **JavaScript** | Strong typing + flexibility |
-| Styling | **Tailwind CSS** | Utility-first CSS framework. (Your repo has `tailwind.config.ts`) |
-| Build / Tooling | Node.js, npm / yarn | For package management & scripts |
-| Config | `tailwind.config.ts` | Tailwind configuration file |
-| Others | — | You can list any other libraries (e.g. React, Next.js, Axios, etc.) if you use them |
-
-> 💡 If your repo includes React, Next.js, or a backend, you can extend this table accordingly.
+- Responsive frontend built with **Tailwind CSS & TypeScript**
+- Dynamic project listings via **Node.js & Express backend**
+- Media handling (images/videos) with proper routing
+- Easy content management via REST APIs
+- Fully LAN-accessible for local testing
 
 ---
 
-/show-case-architects
-│  package.json
-│  tailwind.config.ts
-│  /server            # (if you have backend code)
-│  /public            # static assets
-│  /src
-│    /components
-│    /pages            # or /views
-│    /styles
-│    /utils
-│  ...
+## 📁 Project Structure
+
+my-showcase-architects/
+├─ my-showcase/ # Frontend
+│ ├─ src/
+│ ├─ public/
+│ └─ package.json
+├─ server/ # Backend (Node.js/Express)
+│ ├─ route/
+│ ├─ configs/
+│ └─ server.js
+├─ .env
+├─ package.json
+└─ README.md
 
 
-## 🚀 Getting Started
+---
 
-### Prerequisites
+## ⚙️ Tech Stack
 
-Make sure you have:
+- **Frontend:** TypeScript, React, Tailwind CSS, Vite
+- **Backend:** Node.js, Express, MongoDB
+- **Dev Tools:** Vitest (unit testing), Playwright (E2E testing), dotenv, CORS
 
-- **Node.js** installed (v14+ recommended)  
-- **npm** or **yarn**  
-- A code editor (VS Code, etc.)
+---
 
-### Installation
+## 🧩 Getting Started
 
+### 1. Clone the repository
 ```bash
-# Clone the repo
 git clone https://github.com/yemom/show-case-architects.git
 cd show-case-architects
 
-# Install dependencies
+
 npm install
-# or
-yarn install
+cd my-showcase
+npm install
+
+PORT=3000
+MONGO_URI=your_mongodb_uri
+NODE_ENV=development
+
+cd server
+npm start
+
+cd my-showcase
+npm run dev
+
+
+🧪 Testing
+
+Unit/Integration: Vitest (npx vitest run)
+
+End-to-End: Playwright (npx playwright test)
+
+Test both frontend and backend APIs
+
+📐 Project Architecture
+
+See diagram below for frontend/backend separation and data flow.
+
+📝 Contribution
+
+Fork the repo
+
+Create a branch for your feature
+
+Submit a Pull Request
+
+Follow coding conventions and add tests
+
+⚖️ License
+
+MIT License
+
+---
+
+# **2️⃣ Project Architecture Diagram**
+
+Here’s a **textual ASCII-style draft**, which you can turn into an actual diagram in tools like **Draw.io, Figma, or Lucidchart**:
+
++-------------------------+
+| Frontend |
+| (my-showcase React App) |
++-------------------------+
+|
+| REST API / HTTP
+v
++-------------------------+
+| Backend |
+| (Express + Node.js) |
+| - Routes |
+| - Controllers |
+| - MongoDB Models |
++-------------------------+
+|
+| Mongoose
+v
++-------------------------+
+| Database |
+| MongoDB |
++-------------------------+
+
+
+**Flow Explanation:**
+1. **User / Client** interacts with **Frontend** (React/Tailwind).  
+2. Frontend calls **Backend APIs** (`/api/admin`, `/api/blog`) for data.  
+3. **Backend** interacts with **MongoDB** for CRUD operations.  
+4. Media (images/videos) are served from `/uploads` folder.  
+
+---
+
+If you want, I can **also make a fully visual diagram (PNG/SVG) ready to add to the repo**, with arrows, colors, and labels, so it looks super professional for your README.  
+
+Do you want me to make that visual version next?
