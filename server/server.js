@@ -11,16 +11,20 @@ import path from 'path';
 // Load environment variables
 const envResult = dotenv.config();
 if (envResult.error) {
-    console.error("Error loading .env file:", envResult.error);
+  console.error("Error loading .env file:", envResult.error);
 } else {
-    console.log(`Loaded ${Object.keys(envResult.parsed || {}).length} environment variables from .env`);
+  console.log(`Loaded ${Object.keys(envResult.parsed || {}).length} environment variables from .env`);
 }
 
 
 const app = express();
 
+const isTest = process.env.NODE_ENV === "test";
+
 // Single DB connection (connectDB should handle mongoose connect)
-await connectDB();
+if (!isTest) {
+  await connectDB();
+}
 
 // Serve uploaded media as HTTP (NOT file://)
 // Fallback handlers to support legacy files saved directly under /uploads
@@ -64,9 +68,12 @@ app.use((err, req, res, next) => {
   res.status(500).json({ success: false, message: err.message || 'Internal server error' });
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log("Server is running on port" + PORT)
-})
+if (!isTest) {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server is running on port ${PORT} and accessible via LAN`);
+  });
+
+}
 
 export default app;
