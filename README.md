@@ -138,6 +138,3 @@ v
 
 ---
 
-If you want, I can **also make a fully visual diagram (PNG/SVG) ready to add to the repo**, with arrows, colors, and labels, so it looks super professional for your README.  
-
-Do you want me to make that visual version next?
