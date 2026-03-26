@@ -1,6 +1,4 @@
 import Layout from "../components/Layout";
-import { Card, CardContent } from "../components/ui/card";
-import { Button } from "../components/ui/button";
 import {
     Building,
     Home,
@@ -50,114 +48,119 @@ const Services = () => {
 
     return (
         <Layout>
-            <div className="">
-                {/* Hero Section */}
-                <section className="py-20 border-t bg-gradient-to-r from-primary to-secondary text-white">
-                    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                        <h1 className=" architectural-heading  text-4xl md:text-6xl font-bold mb-6">
-                            Our <span className="font-light">Services</span>
-                        </h1>
-                        <p className="text-xl text-muted-foreground architectural-body">
+            <div className="bg-[#eceff2] text-[#13202b]">
+                <section className="relative min-h-[52vh] border-b border-[#c9d3df] overflow-hidden">
+                    <div className="absolute inset-0">
+                        <img
+                            src="https://images.unsplash.com/photo-1501183638710-841dd1904471?q=80&w=1800&auto=format&fit=crop"
+                            alt="Services"
+                            className="h-full w-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-[linear-gradient(105deg,rgba(222,232,242,0.85)_18%,rgba(21,40,60,0.4)_58%,rgba(10,18,28,0.58)_100%)]" />
+                    </div>
+                    <div className="relative z-10 max-w-[1250px] mx-auto px-4 sm:px-8 pt-28 pb-16">
+                        <p className="text-[10px] uppercase tracking-[0.22em] text-[#d8e5f2] mb-4">Services</p>
+                        <h1 className="architectural-heading text-[56px] sm:text-[88px] leading-[0.9] text-white max-w-3xl">Programmed Precision Across Every Scale.</h1>
+                        <p className="mt-5 text-sm sm:text-base text-[#d6e4f1] max-w-2xl leading-8">
                             Comprehensive architectural services tailored to bring your vision to life
                             with precision, creativity, and exceptional attention to detail.
                         </p>
                     </div>
                 </section>
 
-                {/* Services Grid */}
-                <section className="py-20 bg-architectural-light">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <section className="py-16 sm:py-24 bg-[#0f151b] text-white">
+                    <div className="max-w-[1250px] mx-auto px-4 sm:px-8">
+                        <div className="mb-12">
+                            <p className="text-[10px] uppercase tracking-[0.2em] text-[#8da0b5] mb-3">Capabilities</p>
+                            <h2 className="architectural-heading text-[44px] sm:text-[68px] leading-[0.9]">What We Deliver</h2>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
                             {services.map((service, index) => (
-                                <Card key={index} className="border-0 shadow-card hover:shadow-architectural transition-all duration-300 animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
-                                    <CardContent className="p-8 space-y-6">
-                                        <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center">
-                                            <service.icon className="h-8 w-8 text-accent" />
+                                <article key={index} className="border border-white/12 bg-[#151e27] p-6 reveal-up" style={{ animationDelay: `${index * 0.08}s` }}>
+                                    <div className="w-12 h-12 border border-white/20 bg-[#1b2632] flex items-center justify-center">
+                                            <service.icon className="h-5 w-5 text-[#9cb7d5]" />
                                         </div>
 
-                                        <div>
-                                            <h3 className="text-xl font-light mb-3">{service.title}</h3>
-                                            <p className="text-muted-foreground text-sm leading-relaxed">
+                                    <div className="mt-5">
+                                        <h3 className="architectural-heading text-[30px] leading-[0.95] mb-3">{service.title}</h3>
+                                            <p className="text-[#a7b5c6] text-sm leading-7">
                                                 {service.description}
                                             </p>
                                         </div>
 
-                                        <div className="space-y-2">
+                                    <div className="space-y-2 mt-4">
                                             {service.features.map((feature, idx) => (
-                                                <div key={idx} className="flex items-center space-x-2 text-sm">
-                                                    <CheckCircle className="h-4 w-4 text-accent" />
-                                                    <span>{feature}</span>
+                                            <div key={idx} className="flex items-center space-x-2 text-sm text-[#c5d1dd]">
+                                                <CheckCircle className="h-4 w-4 text-[#8fa7c4]" />
+                                                <span>{feature}</span>
                                                 </div>
                                             ))}
                                         </div>
 
-                                        <div className="pt-4 border-t border-border">
-                                            <div className="flex items-center justify-between">
-                                                <span className="text-lg font-light text-accent">{service.price}</span>
+                                    <div className="pt-5 mt-5 border-t border-white/12">
+                                        <div className="flex items-center justify-between">
+                                            <span className="architectural-heading text-[28px] text-[#dfeaf6]">{service.price}</span>
                                                 <Link to={`/services/${service.slug}`}>
-                                                    <Button variant="ghost" size="sm" className="group">
+                                                <span className="inline-flex items-center text-[11px] uppercase tracking-[0.12em] text-[#b6c7d9] hover:text-white transition-colors">
                                                         Learn More
-                                                        <ArrowRight className="ml-2 h-3 w-3 group-hover:translate-x-1 transition-transform" />
-                                                    </Button>
+                                                    <ArrowRight className="ml-2 h-3 w-3" />
+                                                </span>
                                                 </Link>
                                             </div>
                                         </div>
-                                    </CardContent>
-                                </Card>
+                                </article>
                             ))}
                         </div>
                     </div>
                 </section>
 
-                {/* Process Section */}
-                <section className="py-20 bg-background">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="text-center mb-16">
-                            <h2 className="text-4xl font-light architectural-heading mb-6">Our Process</h2>
-                            <p className="text-xl text-muted-foreground architectural-body max-w-3xl mx-auto">
+                <section className="py-16 sm:py-24">
+                    <div className="max-w-[1250px] mx-auto px-4 sm:px-8">
+                        <div className="mb-12">
+                            <p className="text-[10px] uppercase tracking-[0.2em] text-[#50647d] mb-3">Method</p>
+                            <h2 className="architectural-heading text-[44px] sm:text-[68px] leading-[0.9]">Our Process</h2>
+                            <p className="mt-4 text-[#5a6878] max-w-3xl leading-8">
                                 A streamlined approach that ensures every project is delivered on time,
                                 within budget, and exceeds expectations.
                             </p>
                         </div>
 
-                        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
                             {process.map((step, index) => (
-                                <div key={index} className="text-center space-y-4 animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
-                                    <div className="w-16 h-16 bg-accent text-accent-foreground rounded-full flex items-center justify-center mx-auto text-xl font-light">
+                                <div key={index} className="bg-[#dfe6ed] p-6 reveal-up" style={{ animationDelay: `${index * 0.08}s` }}>
+                                    <div className="w-11 h-11 bg-[#111b25] text-white flex items-center justify-center text-sm tracking-[0.08em] mb-5">
                                         {step.step}
                                     </div>
-                                    <h3 className="text-lg font-light">{step.title}</h3>
-                                    <p className="text-muted-foreground text-sm leading-relaxed">
+                                    <h3 className="architectural-heading text-[28px] leading-[0.95] text-[#101a24]">{step.title}</h3>
+                                    <p className="text-[#56687b] text-sm leading-7 mt-3">
                                         {step.description}
                                     </p>
-                                    {index < process.length - 1 && (
-                                        <div className="hidden lg:block absolute top-8 left-full w-8 h-px bg-border" />
-                                    )}
                                 </div>
                             ))}
                         </div>
                     </div>
                 </section>
 
-                {/* CTA Section */}
-                <section className="py-20 bg-primary text-primary-foreground">
-                    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                        <h2 className="text-4xl font-light architectural-heading mb-6">
+                <section className="py-20 sm:py-28 bg-[#0f151b] text-white text-center">
+                    <div className="max-w-3xl mx-auto px-4 sm:px-8">
+                        <p className="text-[10px] uppercase tracking-[0.22em] text-[#9babc0] mb-6">Start with a brief</p>
+                        <h2 className="architectural-heading text-[48px] sm:text-[78px] leading-[0.86] mb-7">
                             Ready to Start Your Project?
                         </h2>
-                        <p className="text-xl mb-8 text-primary-foreground/80">
+                        <p className="text-[#b0bfce] mb-8 leading-8">
                             Let's discuss your vision and create something extraordinary together.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <Link to="/contact">
-                                <Button size="lg" variant="secondary">
+                                <span className="inline-flex h-12 items-center px-9 bg-[#e7edf4] text-[#111b24] text-[11px] uppercase tracking-[0.12em] hover:bg-white transition-colors">
                                     Schedule Consultation
-                                </Button>
+                                </span>
                             </Link>
                             <Link to="/portfolio">
-                                <Button size="lg" variant="outline" className="border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10">
+                                <span className="inline-flex h-12 items-center px-9 border border-white/40 text-white text-[11px] uppercase tracking-[0.12em] hover:bg-white/10 transition-colors">
                                     View Portfolio
-                                </Button>
+                                </span>
                             </Link>
                         </div>
                     </div>

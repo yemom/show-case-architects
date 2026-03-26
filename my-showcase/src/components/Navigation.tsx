@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-import { Button } from "./ui/button";
 import { assets } from "@/assets/assets";
 import { useAppContext } from "@/context/useAppContext";
 
@@ -23,85 +22,82 @@ const Navigation = () => {
         return location.pathname.startsWith(href);
     };
 
-    return (
-        <nav className="fixed top-0 w-full z-50 bg-gradient-to-r from-primary to-secondary text-white backdrop-blur-sm border-b border-border">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between items-center h-16">
-                    {/* Logo */}
-                    <Link to="/" className="flex items-center space-x-3">
-                        <img
-                            src={assets.logo}
-                            alt="Logo"
-                            className="h-8 w-auto select-none"
-                            draggable={false}
-                        />
+    const isHome = location.pathname === "/";
 
+    return (
+        <nav
+            className={`fixed top-0 w-full z-50 border-b backdrop-blur-md transition-colors ${
+                isHome
+                    ? "bg-[#dfe7ef]/82 border-[#a9bacd]/40 text-[#1a222d]"
+                    : "bg-[#10171d]/88 border-white/10 text-[#f4f7fa]"
+            }`}
+        >
+            <div className="max-w-[1250px] mx-auto px-4 sm:px-8">
+                <div className="h-16 flex items-center justify-between gap-4">
+                    <Link to="/" className="flex items-center">
+                        <img src={assets.logo} alt="Monolith" className="h-7 w-auto select-none" draggable={false} />
                     </Link>
 
-                    {/* Desktop Navigation */}
-                    <div className="hidden md:flex items-center space-x-8">
+                    <div className="hidden md:flex items-center gap-9">
                         {navigation.map((item) => (
                             <Link
                                 key={item.name}
                                 to={item.href}
                                 aria-current={isActive(item.href) ? "page" : undefined}
-                                className={`text-sm font-light transition-colors hover:text-accent ${isActive(item.href) ? "text-accent" : "text-white/80"
-                                    }`}
+                                className={`text-[11px] tracking-[0.14em] uppercase transition-all duration-300 ${
+                                    isActive(item.href)
+                                        ? "opacity-100 font-semibold border-b border-current pb-1"
+                                        : "opacity-70 hover:opacity-100"
+                                }`}
                             >
                                 {item.name}
                             </Link>
                         ))}
-                        <Link to={token ? "/admin" : "/admin/login"} className="ml-2">
-                            <Button variant="default" size="sm" className="gap-2 bg-accent text-white hover:bg-accent/90">
-                                {token ? 'Dashboard' : 'Login'}
-                                <img src={assets.arrow} alt="arrow" className="w-3 h-3" />
-                            </Button>
-                        </Link>
                     </div>
 
-                    {/* Mobile menu button */}
-                    <div className="md:hidden">
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => setIsOpen(!isOpen)}
-                            className="text-foreground"
-                            aria-label={isOpen ? 'Close menu' : 'Open menu'}
+                    <div className="flex items-center gap-4">
+                        <Link
+                            to={token ? "/admin" : "/admin/login"}
+                            className="hidden sm:inline-block text-[11px] tracking-[0.12em] uppercase opacity-80 hover:opacity-100"
                         >
-                            {isOpen ? <X size={20} /> : <Menu size={20} />}
-                        </Button>
+                            {token ? "Dashboard" : "Login"}
+                        </Link>
+
+                        <button
+                            type="button"
+                            onClick={() => setIsOpen(!isOpen)}
+                            className="inline-flex h-9 w-9 items-center justify-center border border-current/25 hover:border-current/60 transition-colors"
+                            aria-label={isOpen ? "Close menu" : "Open menu"}
+                        >
+                            {isOpen ? <X size={16} /> : <Menu size={16} />}
+                        </button>
                     </div>
                 </div>
-
-                {/* Mobile Navigation */}
-                {isOpen && (
-                    <div className="md:hidden">
-                        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-secondary border-t border-white/10">
-                            {navigation.map((item) => (
-                                <Link
-                                    key={item.name}
-                                    to={item.href}
-                                    className={`block px-3 py-2 text-base font-light transition-colors ${isActive(item.href)
-                                        ? "text-accent bg-accent/10"
-                                        : "text-white/80 hover:text-accent hover:bg-accent/5"
-                                        }`}
-                                    onClick={() => setIsOpen(false)}
-                                >
-                                    {item.name}
-                                </Link>
-                            ))}
-                            <div className="px-3 py-2">
-                                <Link to={token ? "/admin" : "/admin/login"} onClick={() => setIsOpen(false)}>
-                                    <Button variant="default" size="sm" className="w-full gap-2 bg-accent text-white hover:bg-accent/90">
-                                        {token ? 'Dashboard' : 'Login'}
-                                        <img src={assets.arrow} alt="arrow" className="w-3 h-3" />
-                                    </Button>
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
-                )}
             </div>
+
+            {isOpen && (
+                <div className={`md:hidden border-t ${isHome ? "border-[#a9bacd]/40 bg-[#eaf0f5]" : "border-white/10 bg-[#121a22]"}`}>
+                    <div className="max-w-[1250px] mx-auto px-4 py-4 flex flex-col gap-4">
+                        {navigation.map((item) => (
+                            <Link
+                                key={item.name}
+                                to={item.href}
+                                onClick={() => setIsOpen(false)}
+                                className={`text-sm uppercase tracking-[0.12em] ${isActive(item.href) ? "font-semibold" : "opacity-80"}`}
+                            >
+                                {item.name}
+                            </Link>
+                        ))}
+                        <Link
+                            to={token ? "/admin" : "/admin/login"}
+                            onClick={() => setIsOpen(false)}
+                            className="text-sm uppercase tracking-[0.12em] opacity-80"
+                        >
+                            {token ? "Dashboard" : "Login"}
+                        </Link>
+                    </div>
+                </div>
+            )}
         </nav>
     );
 };

@@ -135,121 +135,169 @@ const BlogDetail: React.FC = () => {
 
   return data ? (
     <Layout>
-      <div className="relative">
-        <img
-          src={assets.gradientBackground}
-          alt=""
-          className="pointer-events-none select-none absolute -top-12 -z-10 opacity-50"
-        />
-
-        <section className="bg-gradient-to-r from-primary to-secondary text-white">
-          <div className="max-w-6xl mx-auto px-6 py-16 text-center">
-            <p className="text-white/80 py-2 font-medium">
-              Published on {data.createdAt ? dayjs(data.createdAt).format("MMMM D, YYYY") : "-"}
-            </p>
-            <h1 className="text-2xl sm:text-5xl font-semibold max-w-3xl mx-auto">{data.title}</h1>
-            {data.subTitle && (
-              <h2 className="my-5 max-w-xl truncate mx-auto text-white/80">{data.subTitle}</h2>
-            )}
-            <p className="inline-block py-1 px-4 rounded-full mb-2 border text-sm border-white/35 bg-white/10 font-medium">
-              STUDIO 21 ARCHITECTS
-            </p>
-          </div>
-        </section>
-
-        <div className="mx-5 max-w-5xl md:mx-auto my-10 mt-6">
-          {mediaSrc &&
-            (data.video ? (
-              <video src={mediaSrc} className="rounded-3xl mb-5 w-full aspect-video object-cover" controls />
-            ) : (
-              <img src={mediaSrc} alt={data.title} className="rounded-3xl mb-5 w-full aspect-video object-cover" />
-            ))}
-
-          {data.description && (
-            <div
-              className="rich-text max-w-3xl mx-auto"
-              dangerouslySetInnerHTML={{ __html: data.description }}
-            />
-          )}
-
-          {/* Comments */}
-          <div className="mt-14 mb-10 max-w-3xl mx-auto">
-            <p className="font-semibold mb-4">
-              Comments ({comments.filter((c) => c.isApproved !== false).length})
-            </p>
-
-            <div className="flex flex-col gap-4">
-              {loadingComments ? (
-                <p className="text-sm text-gray-500">Loading comments…</p>
-              ) : comments.filter((c) => c.isApproved !== false).length ? (
-                comments
-                  .filter((c) => c.isApproved !== false)
-                  .map((item) => (
-                    <div
-                      key={item._id}
-                      className="relative bg-primary/5 border border-primary/20 max-w-xl p-4 rounded text-gray-700"
-                    >
-                      <div className="flex items-center gap-2 mb-2">
-                        <img src={assets.user_icon} alt="" className="w-6" />
-                        <p className="font-medium">{item.name}</p>
-                      </div>
-                      <p className="text-sm max-w-md ml-8">{item.content ?? item.comment}</p>
-                      <div className="absolute right-4 bottom-3 text-xs text-gray-500">
-                        {dayjs(item.createdAt).fromNow()}
-                      </div>
-                    </div>
-                  ))
+      <div className="bg-[#0f151b] text-[#e6eef7]">
+        <section className="relative min-h-[84vh] border-b border-white/10 overflow-hidden">
+          <div className="absolute inset-0">
+            {mediaSrc ? (
+              data.video ? (
+                <video src={mediaSrc} className="w-full h-full object-cover" autoPlay muted loop playsInline />
               ) : (
-                <p className="text-sm text-gray-500">No comments yet.</p>
+                <img src={mediaSrc} alt={data.title} className="w-full h-full object-cover" />
+              )
+            ) : (
+              <img src={assets.gradientBackground} alt={data.title} className="w-full h-full object-cover" />
+            )}
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,15,20,0.18)_0%,rgba(10,15,20,0.74)_70%,rgba(10,15,20,0.96)_100%)]" />
+          </div>
+
+          <div className="relative z-10 max-w-[1250px] mx-auto px-4 sm:px-8 pt-28 pb-16 h-full flex flex-col justify-end">
+            <div className="max-w-3xl reveal-up">
+              <p className="text-[10px] uppercase tracking-[0.2em] text-[#abb9cb] mb-4">
+                {data.category || "Residential"} · {data.createdAt ? dayjs(data.createdAt).format("YYYY") : "2026"}
+              </p>
+              <h1 className="architectural-heading text-[52px] sm:text-[84px] leading-[0.88] text-white">
+                {data.title}
+              </h1>
+              {data.subTitle && (
+                <p className="mt-4 text-sm sm:text-base text-[#c7d5e4] max-w-xl">{data.subTitle}</p>
               )}
             </div>
           </div>
+        </section>
 
-          {/* Comment form */}
-          <div className="max-w-3xl mx-auto">
-            <p className="font-semibold mb-4">Add your Comment</p>
-            <form onSubmit={addComment} className="flex flex-col items-start gap-4 max-w-lg">
-              <input
-                onChange={(e) => setName(e.target.value)}
-                value={name}
-                type="text"
-                placeholder="Name"
-                required
-                className="w-full p-2 border border-gray-300 rounded outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
-              />
-              <input
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
-                type="email"
-                placeholder="Email (optional)"
-                className="w-full p-2 border border-gray-300 rounded outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
-              />
-              <textarea
-                onChange={(e) => setComment(e.target.value)}
-                value={comment}
-                placeholder="Comment"
-                required
-                rows={5}
-                className="w-full p-2 border border-gray-300 rounded outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
-              />
-              <button
-                type="submit"
-                className="bg-accent text-white p-2 px-8 rounded hover:brightness-110 transition-all cursor-pointer"
-              >
-                Submit
-              </button>
-            </form>
+        <section className="max-w-[1250px] mx-auto px-4 sm:px-8 py-14 sm:py-20">
+          <div className="grid lg:grid-cols-[230px_1fr_240px] gap-10">
+            <aside className="text-[#aebcd0] text-xs uppercase tracking-[0.09em] space-y-8">
+              <div>
+                <p className="text-[#6f7f94] mb-2">Credits</p>
+                <p className="text-[#dde7f3]">Lead Architect</p>
+                <p className="mt-1">Monolith Studio</p>
+              </div>
+              <div>
+                <p className="text-[#6f7f94] mb-2">Timeline</p>
+                <p>{data.createdAt ? dayjs(data.createdAt).format("YYYY") : "2026"} Project Commission</p>
+                <p className="mt-1">+2 Years Delivery</p>
+              </div>
+            </aside>
+
+            <div>
+              <h2 className="architectural-heading text-[34px] sm:text-[52px] leading-[0.92] text-white mb-6">
+                Reclaiming Industrial Ruins Through Geometric Rigor.
+              </h2>
+              {data.description && (
+                <div
+                  className="rich-text"
+                  dangerouslySetInnerHTML={{ __html: data.description }}
+                />
+              )}
+            </div>
+
+            <aside className="bg-[#dde3ea] text-[#111a23] p-6 h-fit">
+              <p className="text-[10px] uppercase tracking-[0.22em] text-[#607086] mb-5">Technical Data</p>
+              <p className="architectural-heading text-[32px] leading-none mb-5">1,450 m²</p>
+              <p className="text-sm text-[#2b3745] leading-7">
+                Glass, in-situ concrete, zinc cladding, and low-emissive glazing.
+              </p>
+              <p className="text-[10px] uppercase tracking-[0.16em] mt-6 text-[#607086]">Sustainability</p>
+              <p className="text-sm mt-1">LEED Gold Certified</p>
+            </aside>
           </div>
 
-          <div className="max-w-3xl mx-auto mt-10 flex items-center justify-between">
-            <Link to="/portfolio" className="underline underline-offset-4">
-              ← Back to Portfolio
+          <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+            <img
+              src={mediaSrc || "https://images.unsplash.com/photo-1516455590571-18256e5bb9ff?q=80&w=1300&auto=format&fit=crop"}
+              alt="Project gallery"
+              className="md:col-span-2 h-[240px] sm:h-[380px] w-full object-cover"
+            />
+            <img
+              src="https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=900&auto=format&fit=crop"
+              alt="Project gallery"
+              className="h-[240px] sm:h-[380px] w-full object-cover"
+            />
+            <img
+              src="https://images.unsplash.com/photo-1464146072230-91cabc968266?q=80&w=900&auto=format&fit=crop"
+              alt="Project gallery"
+              className="h-[240px] sm:h-[320px] w-full object-cover"
+            />
+            <img
+              src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?q=80&w=1300&auto=format&fit=crop"
+              alt="Project gallery"
+              className="md:col-span-2 h-[240px] sm:h-[320px] w-full object-cover"
+            />
+          </div>
+
+          <div className="mt-20 pt-12 border-t border-white/10 grid lg:grid-cols-[1fr_360px] gap-12">
+            <div>
+              <p className="architectural-heading text-[32px] text-white mb-6">Comments ({comments.filter((c) => c.isApproved !== false).length})</p>
+              <div className="flex flex-col gap-4">
+                {loadingComments ? (
+                  <p className="text-sm text-[#9fb0c3]">Loading comments...</p>
+                ) : comments.filter((c) => c.isApproved !== false).length ? (
+                  comments
+                    .filter((c) => c.isApproved !== false)
+                    .map((item) => (
+                      <div key={item._id} className="relative border border-white/12 bg-[#17212b] p-4 text-[#d4e2ef]">
+                        <div className="flex items-center gap-2 mb-2">
+                          <img src={assets.user_icon} alt="" className="w-6" />
+                          <p className="font-medium">{item.name}</p>
+                        </div>
+                        <p className="text-sm leading-7">{item.content ?? item.comment}</p>
+                        <div className="absolute right-4 bottom-4 text-xs text-[#8ca1b8]">
+                          {dayjs(item.createdAt).fromNow()}
+                        </div>
+                      </div>
+                    ))
+                ) : (
+                  <p className="text-sm text-[#9fb0c3]">No comments yet.</p>
+                )}
+              </div>
+            </div>
+
+            <div>
+              <p className="architectural-heading text-[32px] text-white mb-6">Add Comment</p>
+              <form onSubmit={addComment} className="flex flex-col gap-4">
+                <input
+                  onChange={(e) => setName(e.target.value)}
+                  value={name}
+                  type="text"
+                  placeholder="Name"
+                  required
+                  className="h-11 px-4 bg-[#121b23] border border-white/15 text-[#e8f1fb] placeholder:text-[#7f92a9] outline-none"
+                />
+                <input
+                  onChange={(e) => setEmail(e.target.value)}
+                  value={email}
+                  type="email"
+                  placeholder="Email (optional)"
+                  className="h-11 px-4 bg-[#121b23] border border-white/15 text-[#e8f1fb] placeholder:text-[#7f92a9] outline-none"
+                />
+                <textarea
+                  onChange={(e) => setComment(e.target.value)}
+                  value={comment}
+                  placeholder="Comment"
+                  required
+                  rows={6}
+                  className="px-4 py-3 bg-[#121b23] border border-white/15 text-[#e8f1fb] placeholder:text-[#7f92a9] outline-none resize-none"
+                />
+                <button
+                  type="submit"
+                  className="h-11 px-8 bg-[#e7edf4] text-[#111b24] text-[11px] uppercase tracking-[0.12em] hover:bg-white transition-colors"
+                >
+                  Submit
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <div className="mt-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+            <Link to="/portfolio" className="text-[#afc0d4] hover:text-white uppercase tracking-[0.1em] text-xs">
+              Back to Portfolio
             </Link>
-            <Link to="/contact" className="rounded-md bg-accent text-white px-4 py-2 hover:brightness-110">
+            <Link to="/contact" className="h-11 inline-flex items-center px-7 bg-[#e7edf4] text-[#111b24] text-[11px] uppercase tracking-[0.12em] hover:bg-white transition-colors">
               Schedule Consultation
             </Link>
           </div>
-        </div>
+        </section>
       </div>
     </Layout>
   ) : (

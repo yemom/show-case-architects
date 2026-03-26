@@ -1,10 +1,7 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, MapPin, Calendar } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAppContext } from "@/context/useAppContext";
-import { getMediaUrl, stripHtml } from "@/lib/util";
+import { getMediaUrl } from "@/lib/util";
 
 type Blog = {
     _id: string;
@@ -22,13 +19,20 @@ const FeaturedProjects: React.FC = () => {
     const [projects, setProjects] = React.useState<Blog[]>([]);
     const [loading, setLoading] = React.useState(true);
 
+    const fallbackImages = [
+        "https://images.unsplash.com/photo-1518005020951-eccb494ad742?q=80&w=1200&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1529429612779-c8e40ef2f36d?q=80&w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1487958449943-2429e8be8625?q=80&w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=80&w=1200&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1534237710431-e2fc698436d0?q=80&w=900&auto=format&fit=crop",
+    ];
+
     React.useEffect(() => {
         const run = async () => {
             try {
                 setLoading(true);
                 const { data } = await axios.get('/api/blog/all');
-                // Take latest 3
-                const list: Blog[] = (data?.blogs || []).slice(0, 3);
+                const list: Blog[] = (data?.blogs || []).slice(0, 5);
                 setProjects(list);
                     } catch {
                         // no-op for homepage
@@ -39,102 +43,108 @@ const FeaturedProjects: React.FC = () => {
         run();
     }, [axios]);
 
+    const getProjectMedia = (project: Blog | undefined, index: number) => {
+        if (project?.image) {
+            return getMediaUrl(project.image, axios.defaults.baseURL) || fallbackImages[index] || fallbackImages[0];
+        }
+        return fallbackImages[index] || fallbackImages[0];
+    };
+
     return (
-        <section className="py-20 bg-architectural-light">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                {/* Section Header */}
-                <div className="text-center mb-16">
-                    <h2 className="text-4xl md:text-5xl font-light architectural-heading mb-6">
-                        Featured Projects
-                    </h2>
-                    <p className="text-xl text-muted-foreground architectural-body max-w-3xl mx-auto">
-                        Explore our portfolio of innovative architectural solutions that have transformed
-                        communities and redefined spaces across the globe.
-                    </p>
-                </div>
+        <>
+            <section className="py-20 sm:py-24 bg-[#eceff2]">
+                <div className="max-w-[1250px] mx-auto px-4 sm:px-8">
+                    <div className="flex flex-col lg:flex-row justify-between gap-10 mb-12">
+                        <div>
+                            <p className="text-[10px] tracking-[0.22em] uppercase text-[#4a5f79] mb-4">Curated Works</p>
+                            <h2 className="architectural-heading text-[44px] sm:text-[64px] leading-[0.9] text-[#111821]">
+                                The Portfolio
+                            </h2>
+                        </div>
+                        <p className="max-w-md text-sm sm:text-base text-[#5c6775] leading-7 lg:pt-8">
+                            A selection of projects that embody our philosophy of structural honesty, material precision, and geometric restraint.
+                        </p>
+                    </div>
 
-                {/* Projects Grid */}
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                    {loading && (
-                      <p className="col-span-full text-center text-sm text-muted-foreground">Loading featured projects…</p>
+                    {loading && <p className="text-sm text-[#647285]">Loading featured projects...</p>}
+
+                    {!loading && (
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+                            <Link to={projects[0]?._id ? `/blog/${projects[0]._id}` : "/portfolio"} className="md:col-span-2 block group overflow-hidden bg-[#dfe4e9] min-h-[220px] sm:min-h-[320px] md:min-h-[470px]">
+                                <img src={getProjectMedia(projects[0], 0)} alt={projects[0]?.title || "Project"} className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform duration-700" />
+                            </Link>
+
+                            <Link to={projects[1]?._id ? `/blog/${projects[1]._id}` : "/portfolio"} className="block group overflow-hidden bg-[#dfe4e9] min-h-[220px] sm:min-h-[320px] md:min-h-[470px]">
+                                <img src={getProjectMedia(projects[1], 1)} alt={projects[1]?.title || "Project"} className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform duration-700" />
+                            </Link>
+
+                            <Link to={projects[2]?._id ? `/blog/${projects[2]._id}` : "/portfolio"} className="block group overflow-hidden bg-[#dfe4e9] min-h-[220px] sm:min-h-[270px]">
+                                <img src={getProjectMedia(projects[2], 2)} alt={projects[2]?.title || "Project"} className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform duration-700" />
+                            </Link>
+
+                            <Link to={projects[3]?._id ? `/blog/${projects[3]._id}` : "/portfolio"} className="block group overflow-hidden bg-[#dfe4e9] min-h-[220px] sm:min-h-[270px]">
+                                <img src={getProjectMedia(projects[3], 3)} alt={projects[3]?.title || "Project"} className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform duration-700" />
+                            </Link>
+
+                            <Link to={projects[4]?._id ? `/blog/${projects[4]._id}` : "/portfolio"} className="block group overflow-hidden bg-[#dfe4e9] min-h-[220px] sm:min-h-[270px]">
+                                <img src={getProjectMedia(projects[4], 4)} alt={projects[4]?.title || "Project"} className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform duration-700" />
+                            </Link>
+                        </div>
                     )}
-                    {!loading && projects.length === 0 && (
-                      <p className="col-span-full text-center text-sm text-muted-foreground">No projects yet.</p>
-                    )}
-                    {!loading && projects.map((project, index) => (
-                        <Card key={project._id} className="group overflow-hidden border-0 shadow-card hover:shadow-architectural transition-all duration-500 animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
-                            <div className="relative overflow-hidden">
-                                                                {project.video ? (
-                                                                    <video
-                                                                        src={getMediaUrl(project.video, axios.defaults.baseURL) || ''}
-                                                                        className="w-full h-64 object-cover"
-                                                                        controls
-                                                                        onError={(e) => {
-                                                                            const el = e.currentTarget as HTMLVideoElement;
-                                                                            if (el.src.includes('/uploads/videos/')) el.src = el.src.replace('/uploads/videos/', '/uploads/');
-                                                                        }}
-                                                                    />
-                                                                ) : (
-                                                                    <img
-                                                                        src={getMediaUrl(project.image, axios.defaults.baseURL) || ''}
-                                                                        alt={project.title}
-                                                                        className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-700"
-                                                                        onError={(e) => {
-                                                                            const el = e.currentTarget as HTMLImageElement;
-                                                                            if (el.src.includes('/uploads/images/')) el.src = el.src.replace('/uploads/images/', '/uploads/');
-                                                                        }}
-                                                                    />
-                                                                )}
-                                <div className="absolute top-4 right-4">
-                                    <span className="px-3 py-1 bg-accent text-accent-foreground text-xs font-medium rounded-full">
-                                        {project.category || 'Project'}
-                                    </span>
-                                </div>
+                </div>
+            </section>
+
+            <section className="py-16 sm:py-24 bg-[#e8ecef] border-t border-[#d2dae3]">
+                <div className="max-w-[1250px] mx-auto px-4 sm:px-8 grid lg:grid-cols-[1fr_1.2fr] gap-12 items-center">
+                    <div>
+                        <h3 className="architectural-heading text-[44px] sm:text-[64px] leading-[0.9] text-[#111821] mb-5">The Studio</h3>
+                        <p className="text-[#596676] leading-8 max-w-xl">
+                            Based in Addis Ababa, we design structures where material, light, and circulation are intentionally composed to create calm and durable spaces.
+                        </p>
+
+                        <div className="mt-10 flex items-center gap-8 sm:gap-12">
+                            <div>
+                                <p className="architectural-heading text-[42px] text-[#5a3f84] leading-none">15+</p>
+                                <p className="text-[10px] uppercase tracking-[0.18em] text-[#556476]">Awards</p>
                             </div>
+                            <div>
+                                <p className="architectural-heading text-[42px] text-[#5a3f84] leading-none">82</p>
+                                <p className="text-[10px] uppercase tracking-[0.18em] text-[#556476]">Projects</p>
+                            </div>
+                            <div>
+                                <p className="architectural-heading text-[42px] text-[#5a3f84] leading-none">04</p>
+                                <p className="text-[10px] uppercase tracking-[0.18em] text-[#556476]">Offices</p>
+                            </div>
+                        </div>
+                    </div>
 
-                            <CardContent className="p-6 space-y-4">
-                                <div className="space-y-2">
-                                    <h3 className="text-xl font-light group-hover:text-accent transition-colors">
-                                        {project.title}
-                                    </h3>
-                                    <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                                        <div className="flex items-center space-x-1">
-                                            <MapPin className="h-3 w-3" />
-                                            <span>{project.subTitle}</span>
-                                        </div>
-                                        <div className="flex items-center space-x-1">
-                                            <Calendar className="h-3 w-3" />
-                                            <span>{new Date(project.createdAt).getFullYear()}</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <p className="text-muted-foreground text-sm leading-relaxed">
-                                    {stripHtml(project.description, 160)}
-                                </p>
-
-                                <Link to={`/blog/${project._id}`}>
-                                    <Button variant="ghost" size="sm" className="group/btn p-0 h-auto font-light">
-                                        View Project
-                                        <ArrowRight className="ml-2 h-3 w-3 group-hover/btn:translate-x-1 transition-transform" />
-                                    </Button>
-                                </Link>
-                            </CardContent>
-                        </Card>
-                    ))}
+                    <div className="relative bg-[#dfe5eb] min-h-[300px] sm:min-h-[450px] overflow-hidden">
+                        <img
+                            src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1400&auto=format&fit=crop"
+                            alt="Monolith studio"
+                            className="h-full w-full object-cover"
+                        />
+                        <div className="absolute left-0 bottom-0 bg-[#f5f7fa] px-8 py-5 shadow-[0_14px_30px_rgba(22,32,43,0.18)]">
+                            <p className="text-[10px] tracking-[0.24em] uppercase text-[#5e6978]">Current Location</p>
+                            <p className="architectural-heading mt-2 text-[25px] text-[#111821]">Addis Ababa, Ethiopia</p>
+                        </div>
+                    </div>
                 </div>
+            </section>
 
-                {/* View All Button */}
-                <div className="text-center">
-                    <Link to="/portfolio">
-                        <Button size="lg" variant="outline">
-                            View All Projects
-                            <ArrowRight className="ml-2 h-4 w-4" />
-                        </Button>
+            <section className="py-20 sm:py-28 bg-[#0f151b] text-white text-center">
+                <div className="max-w-3xl mx-auto px-4 sm:px-8">
+                    <p className="text-[10px] uppercase tracking-[0.22em] text-[#9babc0] mb-6">Interested in collaboration?</p>
+                    <h3 className="architectural-heading text-[52px] sm:text-[82px] leading-[0.86] mb-10">Let's Build The Unconventional.</h3>
+                    <Link
+                        to="/contact"
+                        className="inline-flex items-center justify-center h-12 px-10 bg-[#e7eaee] text-[#0f151b] text-[11px] uppercase tracking-[0.12em] hover:bg-white transition-colors"
+                    >
+                        Start a Conversation
                     </Link>
                 </div>
-            </div>
-        </section>
+            </section>
+        </>
     );
 };
 
