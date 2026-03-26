@@ -66,7 +66,7 @@ const Navigation = () => {
                         <button
                             type="button"
                             onClick={() => setIsOpen(!isOpen)}
-                            className="inline-flex h-9 w-9 items-center justify-center border border-current/25 hover:border-current/60 transition-colors"
+                            className="inline-flex md:hidden h-9 w-9 items-center justify-center border border-current/25 hover:border-current/60 transition-colors"
                             aria-label={isOpen ? "Close menu" : "Open menu"}
                         >
                             {isOpen ? <X size={16} /> : <Menu size={16} />}
