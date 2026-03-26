@@ -18,6 +18,8 @@ if (envResult.error) {
 
 const app = express();
 
+const normalizeOrigin = (value) => String(value || '').trim().replace(/\/$/, '').toLowerCase();
+
 const isTest = process.env.NODE_ENV === "test";
 
 // Single DB connection (connectDB should handle mongoose connect)
@@ -54,23 +56,28 @@ const defaultAllowedOrigins = [
 const configuredOrigins = [
   process.env.FRONTEND_ORIGIN,
   process.env.FRONTEND_ORIGIN_PROD,
+  ...(process.env.FRONTEND_ORIGINS || '').split(',').map((value) => value.trim()).filter(Boolean),
 ].filter(Boolean);
 
-const allowedOrigins = [...new Set([...defaultAllowedOrigins, ...configuredOrigins])];
+const allowedOrigins = [...new Set([...defaultAllowedOrigins, ...configuredOrigins].map(normalizeOrigin))];
 
 // If your Vercel project is studio21-architects, set FRONTEND_VERCEL_PROJECT=studio21-architects
 const vercelProject = process.env.FRONTEND_VERCEL_PROJECT;
 const vercelPreviewRegex = vercelProject
   ? new RegExp(`^https://[a-z0-9-]+-${vercelProject}\\.vercel\\.app$`, 'i')
   : null;
+const allowAnyVercelOrigin = String(process.env.ALLOW_VERCEL_ORIGINS || '').toLowerCase() === 'true';
 
 const corsOptions = {
   origin(origin, callback) {
     // Allow server-to-server calls or curl/Postman without Origin header
     if (!origin) return callback(null, true);
 
-    if (allowedOrigins.includes(origin)) return callback(null, true);
+    const normalizedOrigin = normalizeOrigin(origin);
+
+    if (allowedOrigins.includes(normalizedOrigin)) return callback(null, true);
     if (vercelPreviewRegex && vercelPreviewRegex.test(origin)) return callback(null, true);
+    if (allowAnyVercelOrigin && /^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(origin)) return callback(null, true);
 
     return callback(new Error(`CORS blocked for origin: ${origin}`));
   },
