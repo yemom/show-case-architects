@@ -1,7 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import mongoose from 'mongoose';
 import fs from 'fs';
 import connectDB from './configs/db.js';
 import adminRouter from './route/adminRoute.js';
@@ -46,7 +45,42 @@ app.get('/uploads/videos/:file', (req, res, next) => {
 
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads'))); // primary static serve
 
-app.use(cors())
+const defaultAllowedOrigins = [
+  'http://localhost:8081',
+  'http://localhost:5173',
+  'http://localhost:3000',
+];
+
+const configuredOrigins = [
+  process.env.FRONTEND_ORIGIN,
+  process.env.FRONTEND_ORIGIN_PROD,
+].filter(Boolean);
+
+const allowedOrigins = [...new Set([...defaultAllowedOrigins, ...configuredOrigins])];
+
+// If your Vercel project is studio21-architects, set FRONTEND_VERCEL_PROJECT=studio21-architects
+const vercelProject = process.env.FRONTEND_VERCEL_PROJECT;
+const vercelPreviewRegex = vercelProject
+  ? new RegExp(`^https://[a-z0-9-]+-${vercelProject}\\.vercel\\.app$`, 'i')
+  : null;
+
+const corsOptions = {
+  origin(origin, callback) {
+    // Allow server-to-server calls or curl/Postman without Origin header
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    if (vercelPreviewRegex && vercelPreviewRegex.test(origin)) return callback(null, true);
+
+    return callback(new Error(`CORS blocked for origin: ${origin}`));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+app.use(cors(corsOptions));
+app.options(/.*/, cors(corsOptions));
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 // (Removed duplicate static serve)
