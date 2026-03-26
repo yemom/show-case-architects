@@ -57,7 +57,7 @@ export const services: ServiceItem[] = [
       "Space Optimization",
       "Interior Layout",
     ],
-    price: "Starting at $8,000",
+    price: "Starting at 50,000 birr",
     longDescription:
       "We craft homes that fit the way you live—from layout and circulation to materials and light. Whether new build or renovation, we design with durability and timelessness in mind, coordinating with builders and vendors to make the process stress‑free.",
     buildSteps: [
@@ -85,7 +85,7 @@ export const services: ServiceItem[] = [
     description:
       "Transform your spaces with thoughtful interior design that balances aesthetics and functionality.",
     features: ["Space Planning", "Material Selection", "Furniture Design", "Color Consultation"],
-    price: "Starting at $5,000",
+    price: "Starting at 85,000 birr",
     longDescription:
       "From mood boards and FF&E to detailed joinery drawings and on‑site styling, our interiors are crafted for everyday life. We optimize proportion, storage, and experience—delivering renders and samples so you can visualize early.",
     buildSteps: [
@@ -114,7 +114,7 @@ export const services: ServiceItem[] = [
     description:
       "Photorealistic renderings and virtual walkthroughs to help you visualize your project before construction.",
     features: ["3D Renderings", "Virtual Tours", "Animation", "VR Experiences"],
-    price: "Starting at $2,500",
+    price: "Starting at 50,000 birr",
     longDescription:
       "We produce high‑quality renders and animations for concept validation, marketing, and approvals. Experience your spaces with accurate materials, lighting, and scale—reducing surprises during construction.",
     buildSteps: [
@@ -143,7 +143,7 @@ export const services: ServiceItem[] = [
       "Structural Analysis",
       "Code Compliance",
     ],
-    price: "Starting at $10,000",
+    price: "Starting at 100,000 birr",
     longDescription:
       "From historic buildings to modern refreshes, we plan upgrades that respect context while meeting current needs. Our team coordinates permits, details, and construction sequencing for efficient delivery.",
     buildSteps: [
@@ -168,7 +168,7 @@ export const services: ServiceItem[] = [
     description:
       "Expert architectural consultation for planning, feasibility studies, and project development.",
     features: ["Feasibility Studies", "Design Review", "Code Analysis", "Project Planning"],
-    price: "Starting at $200/hour",
+    price: "Starting at 2,000 birr/hour",
     longDescription:
       "Get clarity on scope, timelines, costs, and approvals. We review plans, analyze codes, and provide decision‑ready insights—ideal for early‑stage projects and investors.",
     buildSteps: [

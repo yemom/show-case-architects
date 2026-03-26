@@ -108,11 +108,11 @@ const FeaturedProjects: React.FC = () => {
                                 <p className="text-[10px] uppercase tracking-[0.18em] text-[#556476]">Awards</p>
                             </div>
                             <div>
-                                <p className="architectural-heading text-[42px] text-[#5a3f84] leading-none">82</p>
+                                <p className="architectural-heading text-[42px] text-[#5a3f84] leading-none">100+</p>
                                 <p className="text-[10px] uppercase tracking-[0.18em] text-[#556476]">Projects</p>
                             </div>
                             <div>
-                                <p className="architectural-heading text-[42px] text-[#5a3f84] leading-none">04</p>
+                                <p className="architectural-heading text-[42px] text-[#5a3f84] leading-none">01</p>
                                 <p className="text-[10px] uppercase tracking-[0.18em] text-[#556476]">Offices</p>
                             </div>
                         </div>
