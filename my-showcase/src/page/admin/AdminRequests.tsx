@@ -82,34 +82,34 @@ const AdminRequests: React.FC = () => {
     }, [fetchAdmins, token, userRole, navigate]);
 
     return (
-        <div className='p-4 sm:p-6 lg:p-8 text-[#e4edf6]'>
+        <div className='p-4 sm:p-6 lg:p-8 text-[#17212b]'>
             <div className='max-w-[1200px] mx-auto'>
                 <div className='mb-4'>
-                    <p className='text-[10px] uppercase tracking-[0.2em] text-[#90a5ba]'>Governance</p>
-                    <h1 className='architectural-heading text-[42px] sm:text-[60px] leading-[0.9] mt-2'>Admin Requests</h1>
+                    <p className='text-[10px] uppercase tracking-[0.2em] text-[#637081]'>Governance</p>
+                    <h1 className='architectural-heading text-[42px] sm:text-[60px] leading-[0.9] mt-2 text-[#1a2329]'>Admin Requests</h1>
                 </div>
-                <div className='overflow-x-auto border border-white/12 bg-[#121a22]'>
+                <div className='overflow-x-auto border border-[#a9bacd]/50 bg-[#eaf0f6]'>
                     <table className='w-full text-sm'>
-                        <thead className='text-left text-[10px] uppercase tracking-[0.1em] text-[#93a9bf] border-b border-white/10'>
+                        <thead className='bg-[#edf3f9] text-left text-[9px] font-semibold uppercase tracking-[0.16em] text-[#5f6f80] border-b border-[#a9bacd]/50'>
                         <tr>
-                            <th className='px-4 py-3'>Email</th>
-                            <th className='px-4 py-3'>Role</th>
-                            <th className='px-4 py-3'>Status</th>
-                            <th className='px-4 py-3'>Action</th>
+                            <th className='px-4 py-2.5'>Email</th>
+                            <th className='px-4 py-2.5'>Role</th>
+                            <th className='px-4 py-2.5'>Status</th>
+                            <th className='px-4 py-2.5'>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         {admins.map((a) => (
-                            <tr key={a._id} className='border-t border-white/8 bg-[#111821] hover:bg-[#17212b] transition-colors'>
-                                <td className='px-4 py-3 text-[#d7e2ee]'>{a.email}</td>
-                                <td className='px-4 py-3 text-[#98aec5]'>{a.role}</td>
-                                <td className='px-4 py-3 text-[#98aec5]'>{a.isApproved ? 'Approved' : 'Pending'}</td>
+                            <tr key={a._id} className='border-t border-[#a9bacd]/35 bg-[#f4f7fb] hover:bg-[#dde5ee] transition-colors'>
+                                <td className='px-4 py-3 text-[#1a2329]'>{a.email}</td>
+                                <td className='px-4 py-3 text-[#5f6f80]'>{a.role}</td>
+                                <td className='px-4 py-3 text-[#5f6f80]'>{a.isApproved ? 'Approved' : 'Pending'}</td>
                                 <td className='px-4 py-3 space-x-2'>
                                     {!a.isApproved && (
-                                        <button onClick={() => onApprove(a._id)} className='px-3 py-1 text-xs border border-emerald-500/60 bg-emerald-500/20 text-emerald-200'>Approve</button>
+                                        <button onClick={() => onApprove(a._id)} className='px-3 py-1 text-xs border border-emerald-600/55 bg-emerald-500/12 text-emerald-700'>Approve</button>
                                     )}
                                     {a.role !== 'super' && (
-                                        <button onClick={() => onDelete(a._id)} className='px-3 py-1 text-xs border border-[#b86f4e]/70 bg-[#b86f4e]/18 text-[#f2d8cb]'>Delete</button>
+                                        <button onClick={() => onDelete(a._id)} className='px-3 py-1 text-xs border border-[#b86f4e]/70 bg-[#b86f4e]/12 text-[#7d442f]'>Delete</button>
                                     )}
                                 </td>
                             </tr>

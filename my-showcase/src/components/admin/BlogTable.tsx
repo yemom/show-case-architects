@@ -68,13 +68,13 @@ const BlogTable: React.FC<Props> = ({ blog, fetchBlogs, index }) => {
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25 }}
-      className="group border-b border-white/8 bg-[#111821] hover:bg-[#17212b] transition-colors"
+      className="group border-b border-[#a9bacd]/35 bg-[#f4f7fb] hover:bg-[#dde5ee] transition-colors"
     >
-      <th className="px-3 py-3 text-[#98aec5]">{index}</th>
-      <td className="px-3 py-3 text-[#d8e3ef]">{title}</td>
-      <td className="px-3 py-3 max-sm:hidden text-[#98aec5]">{BlogDate.toLocaleDateString()}</td>
+      <th className="px-3 py-3 text-[#5f6f80]">{index}</th>
+      <td className="px-3 py-3 text-[#1a2329]">{title}</td>
+      <td className="px-3 py-3 max-sm:hidden text-[#5f6f80]">{BlogDate.toLocaleDateString()}</td>
       <td className="px-3 py-3 max-sm:hidden">
-        <p className={blog.isPublished ? 'text-emerald-400' : 'text-amber-400'}>
+        <p className={blog.isPublished ? 'text-emerald-700' : 'text-amber-700'}>
           {blog.isPublished ? 'published' : 'unpublished'}
         </p>
       </td>
@@ -82,7 +82,7 @@ const BlogTable: React.FC<Props> = ({ blog, fetchBlogs, index }) => {
         <div className="flex text-xs gap-3">
           <button
             onClick={togglePublish}
-            className="border border-[#b86f4e]/50 px-2 py-1 mt-0.5 text-[#f0d6ca] hover:bg-[#b86f4e]/18 transition-colors cursor-pointer"
+            className="border border-[#b86f4e]/55 px-2 py-1 mt-0.5 text-[#7d442f] hover:bg-[#b86f4e]/12 transition-colors cursor-pointer"
           >
             {blog.isPublished ? 'unpublish' : 'publish'}
           </button>

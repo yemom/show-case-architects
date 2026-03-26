@@ -41,30 +41,30 @@ const Comment: React.FC = () => {
     }, [fetchComments]);
 
     return (
-        <div className='p-4 sm:p-6 lg:p-8 text-[#e4edf6]'>
+        <div className='p-4 sm:p-6 lg:p-8 text-[#17212b]'>
             <div className='max-w-[1320px] mx-auto'>
                 <div className='flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4'>
                     <div>
-                        <p className='text-[10px] uppercase tracking-[0.2em] text-[#90a5ba]'>Community</p>
-                        <h1 className='architectural-heading text-[42px] sm:text-[60px] leading-[0.9] mt-2'>Comments</h1>
+                        <p className='text-[10px] uppercase tracking-[0.2em] text-[#637081]'>Community</p>
+                        <h1 className='architectural-heading text-[42px] sm:text-[60px] leading-[0.9] mt-2 text-[#1a2329]'>Comments</h1>
                     </div>
                 <div className='flex gap-4'>
-                    <button onClick={() => setFilter('Approved')} className={`border px-4 py-2 cursor-pointer text-[11px] uppercase tracking-[0.12em] ${filter === 'Approved' ? 'border-[#b86f4e]/55 bg-[#b86f4e]/20 text-[#f2d8cb]' : 'border-white/20 text-[#a8bbcf]'}`}>
+                    <button onClick={() => setFilter('Approved')} className={`border px-4 py-2 cursor-pointer text-[11px] uppercase tracking-[0.12em] ${filter === 'Approved' ? 'border-[#b86f4e]/60 bg-[#b86f4e]/15 text-[#7d442f]' : 'border-[#a9bacd]/60 text-[#637081] bg-[#f4f7fb]'}`}>
                         Approved
                     </button>
-                    <button onClick={() => setFilter('Not Approved')} className={`border px-4 py-2 cursor-pointer text-[11px] uppercase tracking-[0.12em] ${filter === 'Not Approved' ? 'border-[#b86f4e]/55 bg-[#b86f4e]/20 text-[#f2d8cb]' : 'border-white/20 text-[#a8bbcf]'}`}>
+                    <button onClick={() => setFilter('Not Approved')} className={`border px-4 py-2 cursor-pointer text-[11px] uppercase tracking-[0.12em] ${filter === 'Not Approved' ? 'border-[#b86f4e]/60 bg-[#b86f4e]/15 text-[#7d442f]' : 'border-[#a9bacd]/60 text-[#637081] bg-[#f4f7fb]'}`}>
                         Not Approved
                     </button>
                 </div>
             </div>
 
-            <div className='overflow-x-auto mt-5 border border-white/12 bg-[#121a22]'>
+            <div className='overflow-x-auto mt-5 border border-[#a9bacd]/50 bg-[#eaf0f6]'>
                 <table className='w-full text-sm'>
-                    <thead className='text-[10px] text-[#93a9bf] uppercase tracking-[0.1em] text-left border-b border-white/10'>
+                    <thead className='bg-[#edf3f9] text-[9px] font-semibold text-[#5f6f80] uppercase tracking-[0.16em] text-left border-b border-[#a9bacd]/50'>
                         <tr>
-                            <th scope='col' className='px-4 py-3'>Post Title & Comment</th>
-                            <th scope='col' className='px-4 py-3'>Date</th>
-                            <th scope='col' className='px-4 py-3'>Status</th>
+                            <th scope='col' className='px-4 py-2.5'>Post Title & Comment</th>
+                            <th scope='col' className='px-4 py-2.5'>Date</th>
+                            <th scope='col' className='px-4 py-2.5'>Status</th>
                         </tr>
                     </thead>
                     <tbody>

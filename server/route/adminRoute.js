@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import multer from 'multer';
 import { addBlog } from '../controllers/blogController.js';
-import { adminLogin, adminSignup,  getDashboard, getAllComments, deleteCommentById, ApprovedCommentById, listAdmins, approveAdmin, requestAdminAccess, deleteAdmin, forgotPassword, resetPassword, forgotPasswordCode, resetPasswordWithCode, getAllBlogs as adminGetAllBlogs } from '../controllers/adminController.js';
+import { adminLogin, adminSignup,  getDashboard, getAllComments, deleteCommentById, ApprovedCommentById, listAdmins, approveAdmin, requestAdminAccess, deleteAdmin, forgotPassword, resetPassword, forgotPasswordCode, resetPasswordWithCode, getAllBlogs as adminGetAllBlogs, getCurrentAdmin } from '../controllers/adminController.js';
 import auth from '../midleware/auth.js';
 import Comment from '../models/comment.js';
 
@@ -77,6 +77,7 @@ router.post('/delete-admin', auth, async (req, res, next) => {
 
 // Dashboard
 router.get('/dashboard', auth, getDashboard);
+router.get('/me', auth, getCurrentAdmin);
 
 // Comments
 // Fetch all comments (protected)

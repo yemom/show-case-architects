@@ -10,6 +10,17 @@ const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 const JWT_SECRET = process.env.JWT_SECRET || 'dev_secret_change_me';
 
+const toDisplayName = (email = '') => {
+  const local = String(email).trim().split('@')[0] || '';
+  const cleaned = local.replace(/[._-]+/g, ' ').trim();
+  if (!cleaned) return 'Admin';
+  return cleaned
+    .split(' ')
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+};
+
 
 
 export const adminSignup = async (req, res) => {
@@ -76,6 +87,35 @@ export const adminLogin = async (req, res) => {
     return res.status(401).json({ success: false, message: 'Invalid credentials' });
   } catch (err) {
     console.error('adminLogin error:', err);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
+export const getCurrentAdmin = async (req, res) => {
+  try {
+    const authAdmin = req.admin || {};
+    let adminDoc = null;
+
+    if (authAdmin.id) {
+      adminDoc = await Admin.findById(authAdmin.id).select('email role isApproved name');
+    }
+
+    const email = adminDoc?.email || authAdmin.email || '';
+    const role = adminDoc?.role || authAdmin.role || 'admin';
+    const displayName = (adminDoc?.name && String(adminDoc.name).trim()) || toDisplayName(email);
+
+    return res.json({
+      success: true,
+      admin: {
+        id: adminDoc?._id || authAdmin.id || null,
+        email,
+        role,
+        isApproved: typeof adminDoc?.isApproved === 'boolean' ? adminDoc.isApproved : role === 'super',
+        displayName,
+      },
+    });
+  } catch (err) {
+    console.error('getCurrentAdmin error:', err);
     res.status(500).json({ success: false, message: 'Server error' });
   }
 };

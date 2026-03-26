@@ -30,6 +30,7 @@ const Dashboard: React.FC = () => {
     const { axios, token, setToken } = useAppContext();
     const navigate = useNavigate();
     const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
+    const [adminName, setAdminName] = useState('Admin');
     const hasFetchedRef = useRef(false);
 
     useEffect(() => {
@@ -74,12 +75,30 @@ const Dashboard: React.FC = () => {
         }
     }, [axios, token, navigate, setToken]);
 
+    const fetchCurrentAdmin = useCallback(async () => {
+        if (!token) return;
+        try {
+            const { data } = await axios.get('/api/admin/me', {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            if (data?.success && data?.admin?.displayName) {
+                setAdminName(String(data.admin.displayName));
+            }
+        } catch {
+            // Keep UI resilient with default value if identity lookup fails.
+        }
+    }, [axios, token]);
+
     useEffect(() => {
         if (!hasFetchedRef.current) {
             hasFetchedRef.current = true;
             fetchDashboardData();
         }
     }, [fetchDashboardData]);
+
+    useEffect(() => {
+        fetchCurrentAdmin();
+    }, [fetchCurrentAdmin]);
 
     const activitySeries = React.useMemo(() => {
         const blogs = dashboardData?.blogs ?? 0;
@@ -106,36 +125,37 @@ const Dashboard: React.FC = () => {
         ];
     }, [dashboardData?.blogs, dashboardData?.drafts, dashboardData?.comments]);
 
-    const chartColors = ['#b86f4e', '#6f859d', '#8ea5bb'];
+    const chartColors = ['#b86f4e', '#5a80ab', '#8fa7bf'];
 
     return (
-        <div className='p-4 sm:p-6 lg:p-7 text-[#e4edf6]'>
+        <div className='p-4 sm:p-6 lg:p-7 text-[#17212b]'>
             <div className='max-w-[1360px] mx-auto space-y-5'>
                 <section className='grid lg:grid-cols-[2.35fr_0.95fr] gap-4'>
-                    <div className='border border-white/10 bg-[#121a22] p-5 sm:p-6'>
-                        <p className='text-[10px] uppercase tracking-[0.2em] text-[#8da3ba]'>Design Intelligence</p>
-                        <h1 className='architectural-heading mt-3 text-[42px] sm:text-[68px] leading-[0.88] text-[#dbe8f6]'>Total Portfolio Reach</h1>
-                        <p className='text-[#97acc2] mt-3 max-w-2xl'>Live project pipeline and resource allocation overview for studio operations.</p>
+                    <div className='border border-[#a9bacd]/50 bg-[#eaf0f6] p-5 sm:p-6'>
+                        <p className='text-[10px] uppercase tracking-[0.18em] text-[#7a8a9c]'>Welcome, {adminName}</p>
+                        <p className='text-[10px] uppercase tracking-[0.2em] text-[#637081]'>Design Intelligence</p>
+                        <h1 className='architectural-heading mt-3 text-[42px] sm:text-[68px] leading-[0.88] text-[#1a2329]'>Total Portfolio Reach</h1>
+                        <p className='text-[#4f5f71] mt-3 max-w-2xl'>Live project pipeline and resource allocation overview for studio operations.</p>
 
                         <div className='mt-5 grid sm:grid-cols-3 gap-2.5'>
-                            <div className='border border-white/12 bg-[#151f29] p-4'>
-                                <p className='text-[10px] uppercase tracking-[0.14em] text-[#8fa3b9]'>Total Projects</p>
-                                <p className='architectural-heading text-[34px] mt-1'>{dashboardData?.blogs ?? 0}</p>
+                            <div className='border border-[#a9bacd]/45 bg-[#f4f7fb] p-4'>
+                                <p className='text-[10px] uppercase tracking-[0.14em] text-[#637081]'>Total Projects</p>
+                                <p className='architectural-heading text-[34px] mt-1 text-[#1a2329]'>{dashboardData?.blogs ?? 0}</p>
                             </div>
-                            <div className='border border-white/12 bg-[#151f29] p-4'>
-                                <p className='text-[10px] uppercase tracking-[0.14em] text-[#8fa3b9]'>Comments</p>
-                                <p className='architectural-heading text-[34px] mt-1'>{dashboardData?.comments ?? 0}</p>
+                            <div className='border border-[#a9bacd]/45 bg-[#f4f7fb] p-4'>
+                                <p className='text-[10px] uppercase tracking-[0.14em] text-[#637081]'>Comments</p>
+                                <p className='architectural-heading text-[34px] mt-1 text-[#1a2329]'>{dashboardData?.comments ?? 0}</p>
                             </div>
-                            <div className='border border-white/12 bg-[#151f29] p-4'>
-                                <p className='text-[10px] uppercase tracking-[0.14em] text-[#8fa3b9]'>Drafts</p>
-                                <p className='architectural-heading text-[34px] mt-1'>{dashboardData?.drafts ?? 0}</p>
+                            <div className='border border-[#a9bacd]/45 bg-[#f4f7fb] p-4'>
+                                <p className='text-[10px] uppercase tracking-[0.14em] text-[#637081]'>Drafts</p>
+                                <p className='architectural-heading text-[34px] mt-1 text-[#1a2329]'>{dashboardData?.drafts ?? 0}</p>
                             </div>
                         </div>
 
-                        <div className='mt-4 border border-white/12 bg-[#151f29] p-4'>
+                        <div className='mt-4 border border-[#a9bacd]/45 bg-[#f4f7fb] p-4'>
                             <div className='flex items-center justify-between mb-3'>
-                                <p className='text-[10px] uppercase tracking-[0.14em] text-[#8fa3b9]'>Development Velocity</p>
-                                <p className='text-[10px] uppercase tracking-[0.14em] text-[#b8c8d9]'>Weekly</p>
+                                <p className='text-[10px] uppercase tracking-[0.14em] text-[#637081]'>Development Velocity</p>
+                                <p className='text-[10px] uppercase tracking-[0.14em] text-[#4f5f71]'>Weekly</p>
                             </div>
                             <div className='h-44'>
                                 <ResponsiveContainer width='100%' height='100%'>
@@ -146,12 +166,12 @@ const Dashboard: React.FC = () => {
                                                 <stop offset='95%' stopColor='#b86f4e' stopOpacity={0.06} />
                                             </linearGradient>
                                         </defs>
-                                        <CartesianGrid stroke='rgba(255,255,255,0.06)' vertical={false} />
-                                        <XAxis dataKey='month' stroke='#8fa3b9' tick={{ fontSize: 10 }} axisLine={false} tickLine={false} />
-                                        <YAxis stroke='#8fa3b9' tick={{ fontSize: 10 }} axisLine={false} tickLine={false} width={28} />
+                                        <CartesianGrid stroke='rgba(26,35,41,0.12)' vertical={false} />
+                                        <XAxis dataKey='month' stroke='#637081' tick={{ fontSize: 10 }} axisLine={false} tickLine={false} />
+                                        <YAxis stroke='#637081' tick={{ fontSize: 10 }} axisLine={false} tickLine={false} width={28} />
                                         <Tooltip
-                                            contentStyle={{ background: '#111821', border: '1px solid rgba(255,255,255,0.15)', color: '#dce5ef' }}
-                                            labelStyle={{ color: '#dce5ef' }}
+                                            contentStyle={{ background: '#f4f7fb', border: '1px solid rgba(26,35,41,0.18)', color: '#1a2329' }}
+                                            labelStyle={{ color: '#1a2329' }}
                                         />
                                         <Area type='monotone' dataKey='velocity' stroke='#d28460' fill='url(#velocityFill)' strokeWidth={2} />
                                     </AreaChart>
@@ -160,7 +180,7 @@ const Dashboard: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className='border border-[#d5967a]/45 bg-[#b86f4e] p-5 sm:p-6 text-white'>
+                    <div className='border border-[#d5967a]/55 bg-[#b86f4e] p-5 sm:p-6 text-white'>
                         <p className='text-[10px] uppercase tracking-[0.2em] text-[#f5d9cd]'>Activity Focus</p>
                         <div className='mt-4 space-y-4'>
                             <div className='flex items-start gap-3'>
@@ -173,7 +193,7 @@ const Dashboard: React.FC = () => {
                             </div>
                         </div>
 
-                        <div className='mt-5 h-44 border border-white/25 bg-black/12 p-2'>
+                        <div className='mt-5 h-44 border border-white/30 bg-[#9f5f42] p-2'>
                             <ResponsiveContainer width='100%' height='100%'>
                                 <BarChart data={activitySeries}>
                                     <XAxis dataKey='month' stroke='#f3d8ca' tick={{ fontSize: 10 }} axisLine={false} tickLine={false} />
@@ -187,23 +207,23 @@ const Dashboard: React.FC = () => {
                 </section>
 
                 <section className='grid xl:grid-cols-[1.72fr_0.98fr] gap-4'>
-                    <div className='border border-white/10 bg-[#121a22] p-5 sm:p-6'>
+                    <div className='border border-[#a9bacd]/50 bg-[#eaf0f6] p-5 sm:p-6'>
                         <div className='flex items-center justify-between mb-4'>
                             <div className='flex items-center gap-2'>
-                                <Activity className='w-4 h-4 text-[#9cb6d1]' />
-                                <p className='text-[11px] uppercase tracking-[0.14em] text-[#9cb0c5]'>Recent Projects</p>
+                                <Activity className='w-4 h-4 text-[#5a80ab]' />
+                                <p className='text-[11px] uppercase tracking-[0.14em] text-[#637081]'>Recent Projects</p>
                             </div>
-                            <Sparkles className='w-4 h-4 text-[#c3d3e4]' />
+                            <Sparkles className='w-4 h-4 text-[#5a80ab]' />
                         </div>
-                        <div className='overflow-x-auto border border-white/12 bg-[#0f151b]'>
+                        <div className='overflow-x-auto border border-[#a9bacd]/45 bg-[#f4f7fb]'>
                             <table className='w-full text-sm'>
-                                <thead className='text-[10px] uppercase tracking-[0.1em] text-[#90a6bd] border-b border-white/10'>
+                                <thead className='bg-[#edf3f9] text-[9px] font-semibold uppercase tracking-[0.16em] text-[#5f6f80] border-b border-[#a9bacd]/50'>
                                     <tr>
-                                        <th scope='col' className='px-3 py-3 text-left'>#</th>
-                                        <th scope='col' className='px-3 py-3 text-left'>Title</th>
-                                        <th scope='col' className='px-3 py-3 max-sm:hidden text-left'>Date</th>
-                                        <th scope='col' className='px-3 py-3 max-sm:hidden text-left'>Status</th>
-                                        <th scope='col' className='px-3 py-3 text-left'>Actions</th>
+                                        <th scope='col' className='px-3 py-2.5 text-left'>#</th>
+                                        <th scope='col' className='px-3 py-2.5 text-left'>Title</th>
+                                        <th scope='col' className='px-3 py-2.5 max-sm:hidden text-left'>Date</th>
+                                        <th scope='col' className='px-3 py-2.5 max-sm:hidden text-left'>Status</th>
+                                        <th scope='col' className='px-3 py-2.5 text-left'>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -216,21 +236,21 @@ const Dashboard: React.FC = () => {
                     </div>
 
                     <div className='grid sm:grid-cols-2 xl:grid-cols-1 gap-4'>
-                        <article className='border border-white/10 bg-[#121a22] p-5'>
+                        <article className='border border-[#a9bacd]/50 bg-[#eaf0f6] p-5'>
                             <div className='flex items-center gap-2'>
-                                <FolderKanban className='w-4 h-4 text-[#9cb6d1]' />
-                                <p className='text-[11px] uppercase tracking-[0.14em] text-[#9cb0c5]'>Current Engagements</p>
+                                <FolderKanban className='w-4 h-4 text-[#5a80ab]' />
+                                <p className='text-[11px] uppercase tracking-[0.14em] text-[#637081]'>Current Engagements</p>
                             </div>
                             <div className='mt-4 grid grid-cols-2 gap-2.5'>
-                                <img src='https://images.unsplash.com/photo-1518005020951-eccb494ad742?q=80&w=1200&auto=format&fit=crop' alt='preview' className='h-[88px] w-full object-cover border border-white/12' />
-                                <img src='https://images.unsplash.com/photo-1487958449943-2429e8be8625?q=80&w=1200&auto=format&fit=crop' alt='preview' className='h-[88px] w-full object-cover border border-white/12' />
-                                <img src='https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=1200&auto=format&fit=crop' alt='preview' className='h-[88px] w-full object-cover border border-white/12' />
-                                <img src='https://images.unsplash.com/photo-1529429612779-c8e40ef2f36d?q=80&w=1200&auto=format&fit=crop' alt='preview' className='h-[88px] w-full object-cover border border-white/12' />
+                                <img src='https://images.unsplash.com/photo-1518005020951-eccb494ad742?q=80&w=1200&auto=format&fit=crop' alt='preview' className='h-[88px] w-full object-cover border border-[#a9bacd]/45' />
+                                <img src='https://images.unsplash.com/photo-1487958449943-2429e8be8625?q=80&w=1200&auto=format&fit=crop' alt='preview' className='h-[88px] w-full object-cover border border-[#a9bacd]/45' />
+                                <img src='https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=1200&auto=format&fit=crop' alt='preview' className='h-[88px] w-full object-cover border border-[#a9bacd]/45' />
+                                <img src='https://images.unsplash.com/photo-1529429612779-c8e40ef2f36d?q=80&w=1200&auto=format&fit=crop' alt='preview' className='h-[88px] w-full object-cover border border-[#a9bacd]/45' />
                             </div>
                         </article>
 
-                        <article className='border border-white/10 bg-[#151f29] p-5'>
-                            <p className='text-[10px] uppercase tracking-[0.16em] text-[#9cb0c5]'>Project Completion</p>
+                        <article className='border border-[#a9bacd]/50 bg-[#f4f7fb] p-5'>
+                            <p className='text-[10px] uppercase tracking-[0.16em] text-[#637081]'>Project Completion</p>
                             <div className='mt-2 h-32'>
                                 <ResponsiveContainer width='100%' height='100%'>
                                     <PieChart>
@@ -239,11 +259,11 @@ const Dashboard: React.FC = () => {
                                                 <Cell key={`cell-${entry.name}`} fill={chartColors[index % chartColors.length]} />
                                             ))}
                                         </Pie>
-                                        <Tooltip contentStyle={{ background: '#111821', border: '1px solid rgba(255,255,255,0.15)', color: '#dce5ef' }} />
+                                        <Tooltip contentStyle={{ background: '#f4f7fb', border: '1px solid rgba(26,35,41,0.18)', color: '#1a2329' }} />
                                     </PieChart>
                                 </ResponsiveContainer>
                             </div>
-                            <p className='text-sm text-[#b4c4d4] mt-2'>Distribution of published content, drafts, and engagement volume.</p>
+                            <p className='text-sm text-[#4f5f71] mt-2'>Distribution of published content, drafts, and engagement volume.</p>
                         </article>
                     </div>
                 </section>
