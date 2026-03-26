@@ -1,25 +1,26 @@
 import Layout from "../components/Layout";
 import { Users, Award, Building, Target } from "lucide-react";
 import { Link } from "react-router-dom";
+import johnImage from "../assets/john.png";
 
 const About = () => {
     const team = [
         {
             name: "Yohanes Lakew",
             role: "Lead Architect",
-            image: "../assets/john.png",
+            image: johnImage,
             bio: "20+ years of experience in sustainable architecture and urban planning.",
         },
         {
             name: "Elshadai Begashaw",
             role: "Design Director",
-            image: "../assets/john.png",
+            image: johnImage,
             bio: "Specializes in innovative commercial and residential design solutions.",
         },
         {
             name: "Ftsum Begashaw",
             role: "Project Manager",
-            image: "../assets/john.png",
+           image: johnImage,
             bio: "Expert in project coordination and client relationship management.",
         },
     ];
@@ -60,7 +61,7 @@ const About = () => {
                         <div className="absolute inset-0 bg-[linear-gradient(106deg,rgba(219,230,240,0.82)_15%,rgba(17,34,53,0.42)_60%,rgba(12,20,30,0.46)_100%)]" />
                     </div>
                     <div className="relative z-10 max-w-[1250px] mx-auto px-4 sm:px-8 pt-28 pb-16">
-                        <p className="text-[10px] uppercase tracking-[0.23em] text-[#dfebf7] mb-4">About Monolith</p>
+                        <p className="text-[10px] uppercase tracking-[0.23em] text-[#dfebf7] mb-4">About Studio 21 Architects</p>
                         <h1 className="architectural-heading text-white text-[56px] sm:text-[92px] leading-[0.9] max-w-3xl">Designing Cultural Memory In Built Form.</h1>
                         <p className="mt-5 text-sm sm:text-base text-[#d8e5f2] max-w-2xl leading-8">
                             We translate ambition into enduring spaces through disciplined geometry, material intelligence, and contextual sensitivity.

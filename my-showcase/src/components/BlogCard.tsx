@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import Axios from "axios";
 
 // API client without context (avoids type error)
-const API_BASE = import.meta.env.VITE_API_URL || "http://127.0.0.1:3000";
+const API_BASE = import.meta.env.VITE_API_URL || window.location.origin;
 const api = Axios.create({ baseURL: API_BASE }); 
 
 // Helper: convert server path into absolute URL using baseURL/env

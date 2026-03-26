@@ -11,7 +11,7 @@ import Axios from "axios";
 dayjs.extend(relativeTime);
 
 // Stable API base for all calls (prevents requests to 8080)
-const API_BASE = import.meta.env.VITE_API_URL || "http://127.0.0.1:3000";
+const API_BASE = import.meta.env.VITE_API_URL || window.location.origin;
 const api = Axios.create({ baseURL: API_BASE }); // removed withCredentials to avoid CORS
 
 // Build absolute media URL
@@ -171,7 +171,7 @@ const BlogDetail: React.FC = () => {
               <div>
                 <p className="text-[#6f7f94] mb-2">Credits</p>
                 <p className="text-[#dde7f3]">Lead Architect</p>
-                <p className="mt-1">Monolith Studio</p>
+                <p className="mt-1"> Studio 21 Architects</p>
               </div>
               <div>
                 <p className="text-[#6f7f94] mb-2">Timeline</p>

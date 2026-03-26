@@ -65,20 +65,20 @@ const CommentTable: React.FC<Props> = ({ comment, fetchComments }) => {
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25 }}
-      className="border-y border-gray-300 bg-white/60 hover:bg-white shadow-sm hover:shadow-lg transition-all duration-300 rounded-xl overflow-hidden"
+      className="border-b border-white/8 bg-[#111821] hover:bg-[#17212b] transition-colors"
     >
-      <td className="px-6 py-4">
-        <b className="font-medium text-gray-600">Blog</b> : {blog.title}
+      <td className="px-4 py-3 text-[#d7e2ee]">
+        <b className="font-medium text-[#8fa6be]">Blog</b> : {blog.title}
         <br />
         <br />
-        <b className="font-medium text-gray-600">Name</b> : {comment.name}
+        <b className="font-medium text-[#8fa6be]">Name</b> : {comment.name}
         <br />
-        <b className="font-medium text-gray-600">Comment</b> : {comment.content}
+        <b className="font-medium text-[#8fa6be]">Comment</b> : {comment.content}
       </td>
-      <td className="px-6 py-4 max-sm:hidden">
+      <td className="px-4 py-3 max-sm:hidden text-[#97adc4]">
         {BlogDate.toLocaleDateString()}
       </td>
-      <td className="px-6 py-4 ">
+      <td className="px-4 py-3">
         <div className="inline-flex items-center gap-4">
           {!comment.isApproved ? (
             <img
@@ -88,7 +88,7 @@ const CommentTable: React.FC<Props> = ({ comment, fetchComments }) => {
               alt="approve"
             />
           ) : (
-            <p className="text-xs border border-green-600 bg-green-100 text-green-600 rounded-full px-3 py-1 shadow-sm">
+            <p className="text-xs border border-emerald-500/50 bg-emerald-500/20 text-emerald-300 rounded-full px-3 py-1">
               Approved
             </p>
           )}

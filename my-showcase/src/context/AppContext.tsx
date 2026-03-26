@@ -16,7 +16,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [token, setToken] = useState<string | null>(() => localStorage.getItem("token"));
   const [userRole, setUserRole] = useState<string>("super");
 
-  const axios = useMemo(() => axiosOrig.create({}), []);
+  const apiBase = (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/$/, "");
+  const axios = useMemo(() => axiosOrig.create(apiBase ? { baseURL: apiBase } : {}), [apiBase]);
 
   useEffect(() => {
     if (token) {

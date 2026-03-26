@@ -82,11 +82,15 @@ const AdminRequests: React.FC = () => {
     }, [fetchAdmins, token, userRole, navigate]);
 
     return (
-        <div className='flex-1 p-4 md:p-10 bg-architectural-light'>
-            <h1 className='text-xl font-semibold mb-4'>Admin Requests</h1>
-            <div className='bg-white rounded shadow overflow-x-auto max-w-3xl'>
-                <table className='w-full text-sm'>
-                    <thead className='text-left text-gray-600'>
+        <div className='p-4 sm:p-6 lg:p-8 text-[#e4edf6]'>
+            <div className='max-w-[1200px] mx-auto'>
+                <div className='mb-4'>
+                    <p className='text-[10px] uppercase tracking-[0.2em] text-[#90a5ba]'>Governance</p>
+                    <h1 className='architectural-heading text-[42px] sm:text-[60px] leading-[0.9] mt-2'>Admin Requests</h1>
+                </div>
+                <div className='overflow-x-auto border border-white/12 bg-[#121a22]'>
+                    <table className='w-full text-sm'>
+                        <thead className='text-left text-[10px] uppercase tracking-[0.1em] text-[#93a9bf] border-b border-white/10'>
                         <tr>
                             <th className='px-4 py-3'>Email</th>
                             <th className='px-4 py-3'>Role</th>
@@ -96,22 +100,23 @@ const AdminRequests: React.FC = () => {
                     </thead>
                     <tbody>
                         {admins.map((a) => (
-                            <tr key={a._id} className='border-t'>
-                                <td className='px-4 py-3'>{a.email}</td>
-                                <td className='px-4 py-3'>{a.role}</td>
-                                <td className='px-4 py-3'>{a.isApproved ? 'Approved' : 'Pending'}</td>
+                            <tr key={a._id} className='border-t border-white/8 bg-[#111821] hover:bg-[#17212b] transition-colors'>
+                                <td className='px-4 py-3 text-[#d7e2ee]'>{a.email}</td>
+                                <td className='px-4 py-3 text-[#98aec5]'>{a.role}</td>
+                                <td className='px-4 py-3 text-[#98aec5]'>{a.isApproved ? 'Approved' : 'Pending'}</td>
                                 <td className='px-4 py-3 space-x-2'>
                                     {!a.isApproved && (
-                                        <button onClick={() => onApprove(a._id)} className='px-3 py-1 text-xs bg-primary text-white rounded'>Approve</button>
+                                        <button onClick={() => onApprove(a._id)} className='px-3 py-1 text-xs border border-emerald-500/60 bg-emerald-500/20 text-emerald-200'>Approve</button>
                                     )}
                                     {a.role !== 'super' && (
-                                        <button onClick={() => onDelete(a._id)} className='px-3 py-1 text-xs bg-red-600 text-white rounded'>Delete</button>
+                                        <button onClick={() => onDelete(a._id)} className='px-3 py-1 text-xs border border-[#b86f4e]/70 bg-[#b86f4e]/18 text-[#f2d8cb]'>Delete</button>
                                     )}
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
+                </div>
             </div>
         </div>
     );

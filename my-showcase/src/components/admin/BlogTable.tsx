@@ -68,27 +68,27 @@ const BlogTable: React.FC<Props> = ({ blog, fetchBlogs, index }) => {
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25 }}
-      className="group border-y border-gray-300 bg-background/70 hover:bg-white/90 shadow-sm hover:shadow-lg transition-all duration-300 rounded-xl overflow-hidden text-white"
+      className="group border-b border-white/8 bg-[#111821] hover:bg-[#17212b] transition-colors"
     >
-      <th className="px-2 py-4 transition-colors duration-200 group-hover:text-gray-800">{index}</th>
-      <td className="px-2 py-4 transition-colors duration-200 group-hover:text-gray-800">{title}</td>
-      <td className="px-2 py-4 max-sm:hidden transition-colors duration-200 group-hover:text-gray-800">{BlogDate.toLocaleDateString()}</td>
-      <td className="px-2 py-4 max-sm:hidden transition-colors duration-200 group-hover:text-gray-800">
-        <p className={blog.isPublished ? 'text-green-600' : 'text-orange-700'}>
+      <th className="px-3 py-3 text-[#98aec5]">{index}</th>
+      <td className="px-3 py-3 text-[#d8e3ef]">{title}</td>
+      <td className="px-3 py-3 max-sm:hidden text-[#98aec5]">{BlogDate.toLocaleDateString()}</td>
+      <td className="px-3 py-3 max-sm:hidden">
+        <p className={blog.isPublished ? 'text-emerald-400' : 'text-amber-400'}>
           {blog.isPublished ? 'published' : 'unpublished'}
         </p>
       </td>
-      <td className="px-2 py-4 transition-colors duration-200 group-hover:text-gray-800">
+      <td className="px-3 py-3">
         <div className="flex text-xs gap-3">
           <button
             onClick={togglePublish}
-            className="border px-2 py-0.5 mt-1 rounded cursor-pointer hover:shadow-md transition-all text-white group-hover:text-gray-800"
+            className="border border-[#b86f4e]/50 px-2 py-1 mt-0.5 text-[#f0d6ca] hover:bg-[#b86f4e]/18 transition-colors cursor-pointer"
           >
             {blog.isPublished ? 'unpublish' : 'publish'}
           </button>
           <img
             src={assets.cross_icon}
-            className="w-8 hover:scale-110 transition-transform cursor-pointer drop-shadow"
+            className="w-6 hover:scale-110 transition-transform cursor-pointer"
             onClick={deleteBlog}
             alt="delete"
           />

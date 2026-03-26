@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAppContext } from '../../context/useAppContext';
 import toast from 'react-hot-toast';
+import AuthShell from './AuthShell';
 
 const ResetPasswordCode: React.FC = () => {
   const { axios } = useAppContext();
@@ -41,35 +42,36 @@ const ResetPasswordCode: React.FC = () => {
   };
 
   return (
-    <div className='flex items-center justify-center h-screen'>
-      <div className='w-full max-w-sm p-6 max-md:m-6 border border-primary/30 shadow-xl shadow-primary/15 rounded-lg'>
-        <div className='w-full py-4 text-center'>
-          <h1 className='text-2xl font-bold'><span className='text-primary'>Reset</span> Password (Code)</h1>
-          <p className='text-xs text-gray-500 mt-1'>Enter the 6-digit code sent to your email.</p>
+    <AuthShell
+      title='Reset By Code'
+      subtitle='Enter the verification code sent to your inbox and set a new password.'
+      footerText='Need another reset method?'
+      footerLinkLabel='Reset with link'
+      footerLinkTo='/admin/reset-password'
+    >
+      <form onSubmit={submit} className='text-[#d9e5f1] flex flex-col gap-4'>
+        <div className='flex flex-col'>
+          <label className='text-[11px] uppercase tracking-[0.12em] text-[#8fa6be] mb-2'>Email</label>
+          <input type='email' value={email} onChange={(e) => setEmail(e.target.value)} className='h-11 px-3 border border-white/20 bg-[#0f151b] text-[#e8f1fb] outline-none' />
         </div>
-        <form onSubmit={submit} className='text-gray-600 flex flex-col gap-4'>
-          <div className='flex flex-col'>
-            <label className='text-sm mb-1'>Email</label>
-            <input type='email' value={email} onChange={(e) => setEmail(e.target.value)} className='border-b-2 border-gray-300 p-2 outline-none' />
-          </div>
-          <div className='flex flex-col'>
-            <label className='text-sm mb-1'>Code</label>
-            <input value={code} onChange={(e) => setCode(e.target.value.replace(/[^0-9]/g, ''))} maxLength={6} placeholder='123456' className='border-b-2 border-gray-300 p-2 tracking-widest text-center outline-none' />
-          </div>
-          <div className='flex flex-col'>
-            <label className='flex justify-between items-center text-sm mb-1'>New Password
-              <button type='button' onClick={() => setShowPwd((p) => !p)} className='text-xs text-primary hover:underline'>{showPwd ? 'Hide' : 'Show'}</button>
-            </label>
-            <input type={showPwd ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)} className='border-b-2 border-gray-300 p-2 outline-none' />
-          </div>
-          <div className='flex flex-col'>
-            <label className='text-sm mb-1'>Confirm Password</label>
-            <input type={showPwd ? 'text' : 'password'} value={confirm} onChange={(e) => setConfirm(e.target.value)} className='border-b-2 border-gray-300 p-2 outline-none' />
-          </div>
-          <button disabled={loading} type='submit' className='w-full py-3 font-medium bg-primary text-white rounded hover:bg-primary/90 transition disabled:opacity-60'>{loading ? 'Resetting...' : 'Reset Password'}</button>
-        </form>
-      </div>
-    </div>
+        <div className='flex flex-col'>
+          <label className='text-[11px] uppercase tracking-[0.12em] text-[#8fa6be] mb-2'>Code</label>
+          <input value={code} onChange={(e) => setCode(e.target.value.replace(/[^0-9]/g, ''))} maxLength={6} placeholder='123456' className='h-11 px-3 border border-white/20 bg-[#0f151b] text-[#e8f1fb] tracking-widest text-center outline-none' />
+        </div>
+        <div className='flex flex-col'>
+          <label className='flex justify-between items-center text-[11px] uppercase tracking-[0.12em] text-[#8fa6be] mb-2'>
+            <span>New Password</span>
+            <button type='button' onClick={() => setShowPwd((p) => !p)} className='text-[10px] text-[#f0d5c8] hover:text-white'>{showPwd ? 'Hide' : 'Show'}</button>
+          </label>
+          <input type={showPwd ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)} className='h-11 px-3 border border-white/20 bg-[#0f151b] text-[#e8f1fb] outline-none' />
+        </div>
+        <div className='flex flex-col'>
+          <label className='text-[11px] uppercase tracking-[0.12em] text-[#8fa6be] mb-2'>Confirm Password</label>
+          <input type={showPwd ? 'text' : 'password'} value={confirm} onChange={(e) => setConfirm(e.target.value)} className='h-11 px-3 border border-white/20 bg-[#0f151b] text-[#e8f1fb] outline-none' />
+        </div>
+        <button disabled={loading} type='submit' className='w-full h-11 bg-[#b86f4e] text-white text-[11px] uppercase tracking-[0.12em] hover:bg-[#a76142] transition-colors disabled:opacity-60'>{loading ? 'Resetting...' : 'Reset Password'}</button>
+      </form>
+    </AuthShell>
   );
 };
 

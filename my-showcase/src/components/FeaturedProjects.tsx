@@ -121,7 +121,7 @@ const FeaturedProjects: React.FC = () => {
                     <div className="relative bg-[#dfe5eb] min-h-[300px] sm:min-h-[450px] overflow-hidden">
                         <img
                             src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1400&auto=format&fit=crop"
-                            alt="Monolith studio"
+                            alt="Studio 21 Architects studio"
                             className="h-full w-full object-cover"
                         />
                         <div className="absolute left-0 bottom-0 bg-[#f5f7fa] px-8 py-5 shadow-[0_14px_30px_rgba(22,32,43,0.18)]">

@@ -35,7 +35,7 @@ const Navigation = () => {
             <div className="max-w-[1250px] mx-auto px-4 sm:px-8">
                 <div className="h-16 flex items-center justify-between gap-4">
                     <Link to="/" className="flex items-center">
-                        <img src={assets.logo} alt="Monolith" className="h-7 w-auto select-none" draggable={false} />
+                        <img src={assets.logo} alt="Studio 21 Architects" className="h-7 w-auto select-none" draggable={false} />
                     </Link>
 
                     <div className="hidden md:flex items-center gap-9">

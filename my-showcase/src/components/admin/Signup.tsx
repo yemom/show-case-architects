@@ -2,6 +2,7 @@ import React from 'react';
 // no navigation after signup; users must wait for approval
 import { useAppContext } from '../../context/useAppContext';
 import toast from 'react-hot-toast';
+import AuthShell from './AuthShell';
 
 const Signup: React.FC = () => {
     const { axios } = useAppContext();
@@ -33,37 +34,40 @@ const Signup: React.FC = () => {
     };
 
     return (
-        <div className='flex items-center justify-center h-screen bg-architectural-light'>
-            <div className='w-full max-w-sm p-6 max-md:m-6 border border-primary/30 shadow-xl shadow-primary/15 rounded-lg bg-white'>
-                <div className='w-full py-6 text-center'>
-                    <h1 className='text-3xl font-bold'><span className='text-primary'>Admin</span> Access / Setup</h1>
-                    <p className='font-light text-sm'>Submit a request for admin access. All requests (including the initial one) require approval by a super admin — you will not be logged in automatically.</p>
+        <AuthShell
+            title='Access Request'
+            subtitle='Submit a request for admin access. All requests require super-admin approval before account activation.'
+            footerText='Already approved?'
+            footerLinkLabel='Go to login'
+            footerLinkTo='/admin/login'
+        >
+            <form onSubmit={onSubmit} className='text-[#d9e5f1] space-y-4'>
+                <div>
+                    <label className='block text-[11px] uppercase tracking-[0.12em] text-[#8fa6be] mb-2'>Email</label>
+                    <input value={email} onChange={(e) => setEmail(e.target.value)} type='email' disabled={submitted} className='w-full h-11 px-3 border border-white/20 bg-[#0f151b] text-[#e8f1fb] outline-none disabled:opacity-70' />
                 </div>
-                <form onSubmit={onSubmit} className='mt-6 w-full sm:max-w-md text-gray-600'>
-                    <div className='flex flex-col gap-4'>
-                        <label>Email</label>
-                        <input value={email} onChange={(e) => setEmail(e.target.value)} type='email' className='border-b-2 border-gray-300 p-2 outline-none mb-6' disabled={submitted} />
+
+                <div>
+                    <label className='flex justify-between items-center text-[11px] uppercase tracking-[0.12em] text-[#8fa6be] mb-2'>
+                        <span>Password</span>
+                        <button type='button' onClick={() => setShowPassword((p) => !p)} className='text-[10px] text-[#f0d5c8] hover:text-white'>
+                            {showPassword ? 'Hide' : 'Show'}
+                        </button>
+                    </label>
+                    <input value={password} onChange={(e) => setPassword(e.target.value)} type={showPassword ? 'text' : 'password'} disabled={submitted} className='w-full h-11 px-3 border border-white/20 bg-[#0f151b] text-[#e8f1fb] outline-none disabled:opacity-70' />
+                </div>
+
+                <button type='submit' disabled={submitted} className='w-full h-11 bg-[#b86f4e] text-white text-[11px] uppercase tracking-[0.12em] hover:bg-[#a76142] transition-colors disabled:opacity-60'>
+                    {submitted ? 'Request submitted — wait for approval' : 'Submit Request'}
+                </button>
+
+                {submitted && (
+                    <div className='text-sm text-[#9db2c8] leading-7'>
+                        Your request is pending approval by a super admin. You will not be logged in automatically.
                     </div>
-                    <div className='flex flex-col gap-2 mb-6'>
-                        <label className='flex justify-between items-center'>
-                            <span>Password</span>
-                            <button type='button' onClick={() => setShowPassword((p) => !p)} className='text-xs text-primary hover:underline'>
-                                {showPassword ? 'Hide' : 'Show'}
-                            </button>
-                        </label>
-                        <input value={password} onChange={(e) => setPassword(e.target.value)} type={showPassword ? 'text' : 'password'} className='border-b-2 border-gray-300 p-2 outline-none' disabled={submitted} />
-                    </div>
-                    <button type='submit' disabled={submitted} className='w-full py-3 font-medium bg-primary text-white rounded cursor-pointer hover:bg-primary/90 transition-all'>
-                        {submitted ? 'Request submitted — wait for approval' : 'Sign Up'}
-                    </button>
-                    {submitted && (
-                        <div className='mt-4 text-center text-sm text-gray-700'>
-                            Thank you — your request is pending approval by a super admin. You will not be logged in automatically.
-                        </div>
-                    )}
-                </form>
-            </div>
-        </div>
+                )}
+            </form>
+        </AuthShell>
     );
 };
 

@@ -37,27 +37,32 @@ const ListBlog: React.FC = () => {
     }, [fetchBlogs]);
 
     return (
-        <div className='flex-1 py-5 px-5 sm:pt-12 md:p-16 bg-architectural-light'>
-            <h1 className='mb-4 text-xl font-semibold'>All Post</h1>
-            <div className='relative h-4/5 max-w-6xl overflow-x-auto shadow rounded-lg scrollbar-hide bg-white'>
-                <table className='w-full text-sm text-gray-500'>
-                    <thead className='text-xs text-gray-600 uppercase text-left bg-gray-100'>
+        <div className='p-4 sm:p-6 lg:p-8 text-[#e4edf6]'>
+            <div className='max-w-[1320px] mx-auto'>
+                <div className='mb-4'>
+                    <p className='text-[10px] uppercase tracking-[0.2em] text-[#90a5ba]'>Content Library</p>
+                    <h1 className='architectural-heading text-[42px] sm:text-[60px] leading-[0.9] mt-2'>All Projects</h1>
+                </div>
+
+                <div className='overflow-x-auto border border-white/12 bg-[#121a22]'>
+                    <table className='w-full text-sm'>
+                        <thead className='text-[10px] text-[#93a9bf] uppercase tracking-[0.1em] text-left border-b border-white/10'>
                         <tr>
-                            <th className='px-2 py-3'>#</th>
-                            <th className='px-2 py-3'>Title</th>
-                            <th className='px-2 py-3 max-sm:hidden'>Date</th>
-                            <th className='px-2 py-3 max-sm:hidden'>Status</th>
-                            <th className='px-2 py-3'>Actions</th>
+                            <th className='px-3 py-3'>#</th>
+                            <th className='px-3 py-3'>Title</th>
+                            <th className='px-3 py-3 max-sm:hidden'>Date</th>
+                            <th className='px-3 py-3 max-sm:hidden'>Status</th>
+                            <th className='px-3 py-3'>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {loading ? (
                             <tr>
-                                <td colSpan={5} className='text-center py-8 text-gray-500'>Loading post...</td>
+                                <td colSpan={5} className='text-center py-8 text-[#8ea3b8]'>Loading post...</td>
                             </tr>
                         ) : blogs.length === 0 ? (
                             <tr>
-                                <td colSpan={5} className='text-center py-8 text-gray-500'>No post found</td>
+                                <td colSpan={5} className='text-center py-8 text-[#8ea3b8]'>No post found</td>
                             </tr>
                         ) : (
                             blogs.map((blog, index) => (
@@ -66,6 +71,7 @@ const ListBlog: React.FC = () => {
                         )}
                     </tbody>
                 </table>
+                </div>
             </div>
         </div>
     );

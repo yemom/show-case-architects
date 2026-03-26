@@ -132,47 +132,50 @@ const AddBlog: React.FC = () => {
     };
 
     return (
-        <form onSubmit={onSubmitHandler} className='flex-1 text-gray-600 h-full overflow-auto bg-architectural-light'>
-            <div className='bg-white w-full max-w-3xl p-4 md:p-10 sm:m-10 shadow rounded'>
-                <p>Upload project image {REQUIRE_IMAGE ? '(required)' : '(optional)'}</p>
+        <form onSubmit={onSubmitHandler} className='p-4 sm:p-6 lg:p-8 text-[#e4edf6]'>
+            <div className='max-w-[1100px] mx-auto border border-white/12 bg-[#121a22] p-5 sm:p-8'>
+                <p className='text-[10px] uppercase tracking-[0.2em] text-[#90a5ba]'>Content Studio</p>
+                <h1 className='architectural-heading text-[42px] sm:text-[60px] leading-[0.9] mt-2 mb-6'>Create Project</h1>
+
+                <p className='text-[#9eb2c7]'>Upload project image {REQUIRE_IMAGE ? '(required)' : '(optional)'}</p>
                 <label htmlFor='image'>
-                    <img src={!image ? assets.upload_area : URL.createObjectURL(image)} alt='Preview' className='mt-2 h-20 w-28 object-cover rounded cursor-pointer border' />
+                    <img src={!image ? assets.upload_area : URL.createObjectURL(image)} alt='Preview' className='mt-2 h-24 w-36 object-cover cursor-pointer border border-white/20 bg-[#0f151b]' />
                     <input type='file' id='image' accept='image/*' hidden onChange={(e) => setImage(e.target.files ? e.target.files[0] : null)} />
                 </label>
 
-                <p className='mt-6'>Optional project video</p>
+                <p className='mt-6 text-[#9eb2c7]'>Optional project video</p>
                 <label htmlFor='video'>
                     {video ? (
-                        <video src={URL.createObjectURL(video)} className='mt-2 h-28 w-48 rounded border object-cover' controls />
+                        <video src={URL.createObjectURL(video)} className='mt-2 h-28 w-48 border border-white/20 object-cover' controls />
                     ) : (
-                        <div className='mt-2 h-16 w-44 flex items-center justify-center border-2 border-dashed border-gray-300 rounded text-xs text-gray-500 cursor-pointer'>
+                        <div className='mt-2 h-16 w-44 flex items-center justify-center border-2 border-dashed border-white/25 text-xs text-[#8ea3b8] cursor-pointer'>
                             Select video
                         </div>
                     )}
                     <input type='file' id='video' accept='video/*' hidden onChange={(e) => setVideo(e.target.files ? e.target.files[0] : null)} />
                 </label>
 
-                <p className='mt-6 font-medium'>Project Title</p>
-                <input type='text' placeholder='e.g. Modern Living Room' className='w-full max-w-lg mt-2 p-2 border border-gray-300 outline-none rounded' value={title} onChange={(e) => setTitle(e.target.value)} />
+                <p className='mt-6 font-medium text-[#d8e3ef]'>Project Title</p>
+                <input type='text' placeholder='e.g. Modern Living Room' className='w-full max-w-lg mt-2 px-3 h-11 border border-white/20 bg-[#0f151b] text-[#e8f1fb] outline-none' value={title} onChange={(e) => setTitle(e.target.value)} />
 
-                <p className='mt-4 font-medium'>Project Subtitle</p>
-                <input type='text' placeholder='e.g. Cozy and Elegant' className='w-full max-w-lg mt-2 p-2 border border-gray-300 outline-none rounded' value={subTitle} onChange={(e) => setSubTitle(e.target.value)} />
+                <p className='mt-4 font-medium text-[#d8e3ef]'>Project Subtitle</p>
+                <input type='text' placeholder='e.g. Cozy and Elegant' className='w-full max-w-lg mt-2 px-3 h-11 border border-white/20 bg-[#0f151b] text-[#e8f1fb] outline-none' value={subTitle} onChange={(e) => setSubTitle(e.target.value)} />
 
-                <p className='mt-4 font-medium'>Project Description</p>
-                <div className='max-w-lg min-h-60 pb-16 pt-2 relative border rounded'>
+                <p className='mt-4 font-medium text-[#d8e3ef]'>Project Description</p>
+                <div className='max-w-lg min-h-60 pb-16 pt-2 relative border border-white/20 bg-[#0f151b]'>
                     <div ref={editorRef}></div>
                     {loadingAI && (
-                        <div className='absolute inset-0 flex items-center justify-center bg-white/60'>
-                            <div className='w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin'></div>
+                        <div className='absolute inset-0 flex items-center justify-center bg-[#0f151b]/70'>
+                            <div className='w-8 h-8 rounded-full border-2 border-[#b86f4e] border-t-transparent animate-spin'></div>
                         </div>
                     )}
-                    <button type='button' disabled={loadingAI || !USE_GENERATE_ENDPOINT} onClick={generateContent} className='absolute bottom-2 right-2 text-xs text-white bg-primary px-4 py-1.5 rounded hover:opacity-90 disabled:opacity-50'>
+                    <button type='button' disabled={loadingAI || !USE_GENERATE_ENDPOINT} onClick={generateContent} className='absolute bottom-2 right-2 text-xs text-white bg-[#b86f4e] px-4 py-1.5 hover:opacity-90 disabled:opacity-50'>
                         {loadingAI ? 'Generating...' : 'Generate with AI'}
                     </button>
                 </div>
 
-                <p className='mt-4 font-medium'>Project Category</p>
-                <select value={category} onChange={(e) => setCategory(e.target.value)} className='mt-2 px-3 py-2 border text-gray-600 border-gray-300 outline-none rounded'>
+                <p className='mt-4 font-medium text-[#d8e3ef]'>Project Category</p>
+                <select value={category} onChange={(e) => setCategory(e.target.value)} className='mt-2 px-3 h-11 border text-[#d7e2ee] border-white/20 bg-[#0f151b] outline-none'>
                     <option value=''>Select category</option>
                     <option value='Living Room'>Living Room</option>
                     <option value='Bedroom'>Bedroom</option>
@@ -181,12 +184,12 @@ const AddBlog: React.FC = () => {
                     <option value='Outdoor'>Outdoor</option>
                 </select>
 
-                <div className='flex gap-2 mt-4 items-center'>
+                <div className='flex gap-2 mt-4 items-center text-[#9eb2c7]'>
                     <p>Publish Now</p>
                     <input type='checkbox' checked={isPublished} className='scale-125 cursor-pointer' onChange={(e) => setIsPublished(e.target.checked)} />
                 </div>
 
-                <button type='submit' disabled={isAdding} className='mt-8 w-44 h-11 bg-primary text-white rounded cursor-pointer text-sm font-medium disabled:opacity-50'>
+                <button type='submit' disabled={isAdding} className='mt-8 w-44 h-11 bg-[#b86f4e] text-white cursor-pointer text-[11px] uppercase tracking-[0.12em] disabled:opacity-50'>
                     {isAdding ? 'Posting...' : 'Add Project'}
                 </button>
             </div>

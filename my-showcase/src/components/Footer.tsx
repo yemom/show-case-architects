@@ -7,15 +7,15 @@ const Footer = () => {
             <div className="max-w-[1250px] mx-auto px-4 sm:px-8 py-8">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-[10px] tracking-[0.12em] uppercase">
                     <Link to="/" className="opacity-90 hover:opacity-100 transition-opacity">
-                        <img src={assets.logo} alt="Monolith" className="h-6 w-auto" draggable={false} />
+                        <img src={assets.logo} alt="Studio 21 Architects" className="h-6 w-auto" draggable={false} />
                     </Link>
 
                     <div className="flex items-center gap-6 text-[#aab8c9]">
                         <a href="https://www.instagram.com/architectsstudio21" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">
                             Instagram
                         </a>
-                        <a href="https://www.behance.net" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">
-                            Behance
+                        <a href="https://www.tiktok.com/@studio.21.architects?_t=ZM-8zpWoh2CNSq&_r=1" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">
+                            TikTok
                         </a>
                         <a href="https://www.linkedin.com" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">
                             LinkedIn
@@ -25,7 +25,7 @@ const Footer = () => {
                         </Link>
                     </div>
 
-                    <p className="text-[#97a6b8] text-center md:text-right">© 2026 Monolith Architecture. All rights reserved.</p>
+                    <p className="text-[#97a6b8] text-center md:text-right">© 2026 Studio 21 Architects. All rights reserved.</p>
                 </div>
             </div>
         </footer>

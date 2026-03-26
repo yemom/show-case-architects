@@ -2,6 +2,7 @@ import React from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../context/useAppContext';
 import toast from 'react-hot-toast';
+import AuthShell from './AuthShell';
 
 const ResetPassword: React.FC = () => {
   const { axios } = useAppContext();
@@ -40,29 +41,30 @@ const ResetPassword: React.FC = () => {
   };
 
   return (
-    <div className='flex items-center justify-center h-screen'>
-      <div className='w-full max-w-sm p-6 max-md:m-6 border border-primary/30 shadow-xl shadow-primary/15 rounded-lg'>
-        <div className='w-full py-6 text-center'>
-          <h1 className='text-3xl font-bold'><span className='text-primary'>Reset</span> Password</h1>
-          <p className='font-light text-sm break-all'>{email}</p>
+    <AuthShell
+      title='Reset Password'
+      subtitle={`Resetting account: ${email || 'Unknown email'}`}
+      footerText='Need a new code?'
+      footerLinkLabel='Forgot password'
+      footerLinkTo='/admin/forgot-password'
+    >
+      <form onSubmit={onSubmit} className='text-[#d9e5f1] space-y-4'>
+        <div>
+          <label className='flex justify-between items-center text-[11px] uppercase tracking-[0.12em] text-[#8fa6be] mb-2'>
+            <span>New Password</span>
+            <button type='button' onClick={() => setShowPassword((p) => !p)} className='text-[10px] text-[#f0d5c8] hover:text-white ml-2'>{showPassword ? 'Hide' : 'Show'}</button>
+          </label>
+          <input type={showPassword ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)} className='w-full h-11 px-3 border border-white/20 bg-[#0f151b] text-[#e8f1fb] outline-none' />
         </div>
-        <form onSubmit={onSubmit} className='mt-4 text-gray-600'>
-          <div className='flex flex-col gap-2 mb-4'>
-            <label className='flex justify-between items-center'>New Password
-              <button type='button' onClick={() => setShowPassword((p) => !p)} className='text-xs text-primary hover:underline ml-2'>{showPassword ? 'Hide' : 'Show'}</button>
-            </label>
-            <input type={showPassword ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)} className='w-full border-b-2 border-gray-300 p-2 outline-none' />
-          </div>
-          <div className='flex flex-col gap-2 mb-6'>
-            <label>Confirm Password</label>
-            <input type={showPassword ? 'text' : 'password'} value={confirm} onChange={(e) => setConfirm(e.target.value)} className='w-full border-b-2 border-gray-300 p-2 outline-none' />
-          </div>
-          <button disabled={loading} type='submit' className='w-full py-3 font-medium bg-primary text-white rounded cursor-pointer hover:bg-primary/90 transition-all disabled:opacity-60'>
+        <div>
+          <label className='block text-[11px] uppercase tracking-[0.12em] text-[#8fa6be] mb-2'>Confirm Password</label>
+          <input type={showPassword ? 'text' : 'password'} value={confirm} onChange={(e) => setConfirm(e.target.value)} className='w-full h-11 px-3 border border-white/20 bg-[#0f151b] text-[#e8f1fb] outline-none' />
+        </div>
+        <button disabled={loading} type='submit' className='w-full h-11 bg-[#b86f4e] text-white text-[11px] uppercase tracking-[0.12em] hover:bg-[#a76142] transition-colors disabled:opacity-60'>
             {loading ? 'Resetting...' : 'Reset Password'}
-          </button>
-        </form>
-      </div>
-    </div>
+        </button>
+      </form>
+    </AuthShell>
   );
 };
 

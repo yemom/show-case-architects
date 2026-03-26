@@ -2,6 +2,7 @@ import React from 'react';
 import { useAppContext } from '../../context/useAppContext';
 import { useNavigate, Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import AuthShell from './AuthShell';
 
 const Login: React.FC = () => {
     const { axios, setToken } = useAppContext();
@@ -41,58 +42,53 @@ const Login: React.FC = () => {
     };
 
     return (
-        <div className='flex items-center justify-center h-screen bg-architectural-light'>
-            <div className='w-full max-w-sm p-6 max-md:m-6 border border-primary/30 shadow-xl shadow-primary/15 rounded-lg  bg-white'>
-                <div className='flex flex-col items-center justify-center'>
-                    <div className='w-full py-6 text-center'>
-                        <h1 className='text-3xl font-bold'><span className='text-primary'>Admin</span> Login</h1>
-                        <p className='font-light'>Enter your credentials to access the admin panel</p>
-                    </div>
-                    <form onSubmit={handleSubmit} className='mt-6 w-full sm:max-w-md text-gray-600'>
-                        <div className='flex flex-col gap-4'>
-                            <label>Email</label>
-                            <input
-                                onChange={(e) => setEmail(e.target.value)}
-                                value={email}
-                                type='email'
-                                placeholder='email'
-                                className='border-b-2 border-gray-300 p-2 outline-none mb-6'
-                            />
-                        </div>
-                        <div className='flex flex-col gap-2 mb-6'>
-                            <label className='flex justify-between items-center'>
-                                <span>Password</span>
-                                <button
-                                    type='button'
-                                    onClick={() => setShowPassword((p) => !p)}
-                                    className='text-xs text-primary hover:underline'
-                                >
-                                    {showPassword ? 'Hide' : 'Show'}
-                                </button>
-                            </label>
-                            <div className='relative'>
-                                <input
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    value={password}
-                                    type={showPassword ? 'text' : 'password'}
-                                    placeholder='Password'
-                                    className='w-full border-b-2 border-gray-300 p-2 outline-none pr-16'
-                                />
-                            </div>
-                            <div className='text-right -mt-2'>
-                                <Link to='/admin/forgot-password' className='text-xs text-primary hover:underline'>Forgot password?</Link>
-                            </div>
-                        </div>
-                        <button
-                            type='submit'
-                            className='w-full py-3 font-medium bg-primary text-white rounded cursor-pointer hover:bg-primary/90 transition-all'
-                        >
-                            Login
-                        </button>
-                    </form>
+        <AuthShell
+            title='Admin Login'
+            subtitle='Enter your credentials to access architecture operations and publication controls.'
+            footerText='Need access?'
+            footerLinkLabel='Create request'
+            footerLinkTo='/admin/signup'
+        >
+            <form onSubmit={handleSubmit} className='text-[#d9e5f1] space-y-4'>
+                <div>
+                    <label className='block text-[11px] uppercase tracking-[0.12em] text-[#8fa6be] mb-2'>Email</label>
+                    <input
+                        onChange={(e) => setEmail(e.target.value)}
+                        value={email}
+                        type='email'
+                        placeholder='admin@studio.com'
+                        className='w-full h-11 px-3 border border-white/20 bg-[#0f151b] text-[#e8f1fb] outline-none'
+                    />
                 </div>
-            </div>
-        </div>
+
+                <div>
+                    <label className='flex justify-between items-center text-[11px] uppercase tracking-[0.12em] text-[#8fa6be] mb-2'>
+                        <span>Password</span>
+                        <button
+                            type='button'
+                            onClick={() => setShowPassword((p) => !p)}
+                            className='text-[10px] text-[#f0d5c8] hover:text-white'
+                        >
+                            {showPassword ? 'Hide' : 'Show'}
+                        </button>
+                    </label>
+                    <input
+                        onChange={(e) => setPassword(e.target.value)}
+                        value={password}
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder='Password'
+                        className='w-full h-11 px-3 border border-white/20 bg-[#0f151b] text-[#e8f1fb] outline-none'
+                    />
+                    <div className='text-right mt-2'>
+                        <Link to='/admin/forgot-password' className='text-[11px] uppercase tracking-[0.12em] text-[#f0d5c8] hover:text-white'>Forgot password?</Link>
+                    </div>
+                </div>
+
+                <button type='submit' className='w-full h-11 bg-[#b86f4e] text-white text-[11px] uppercase tracking-[0.12em] hover:bg-[#a76142] transition-colors'>
+                    Login
+                </button>
+            </form>
+        </AuthShell>
     );
 };
 
