@@ -11,7 +11,7 @@ const FeaturedProjects = () => {
             location: "New York, NY",
             year: "2024",
             description: "A 40-story luxury residential tower featuring sustainable design principles and panoramic city views.",
-            image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&h=400&fit=crop",
+            image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&h=400&fm=webp&fit=crop",
         },
         {
             id: 2,
@@ -20,7 +20,7 @@ const FeaturedProjects = () => {
             location: "San Francisco, CA",
             year: "2023",
             description: "Modern office complex designed to foster creativity and collaboration in the heart of Silicon Valley.",
-            image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop",
+            image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fm=webp&fit=crop",
         },
         {
             id: 3,
@@ -29,7 +29,7 @@ const FeaturedProjects = () => {
             location: "Chicago, IL",
             year: "2023",
             description: "A dynamic cultural space that brings together art, performance, and community engagement.",
-            image: "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?w=600&h=400&fit=crop",
+            image: "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?w=600&h=400&fm=webp&fit=crop",
         },
     ];
 

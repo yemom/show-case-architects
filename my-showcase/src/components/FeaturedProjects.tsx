@@ -20,11 +20,11 @@ const FeaturedProjects: React.FC = () => {
     const [loading, setLoading] = React.useState(true);
 
     const fallbackImages = [
-        "https://images.unsplash.com/photo-1518005020951-eccb494ad742?q=80&w=1200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1529429612779-c8e40ef2f36d?q=80&w=900&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1487958449943-2429e8be8625?q=80&w=900&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=80&w=1200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1534237710431-e2fc698436d0?q=80&w=900&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1518005020951-eccb494ad742?q=80&w=1200&fm=webp&fit=crop",
+        "https://images.unsplash.com/photo-1529429612779-c8e40ef2f36d?q=80&w=900&fm=webp&fit=crop",
+        "https://images.unsplash.com/photo-1487958449943-2429e8be8625?q=80&w=900&fm=webp&fit=crop",
+        "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=80&w=1200&fm=webp&fit=crop",
+        "https://images.unsplash.com/photo-1534237710431-e2fc698436d0?q=80&w=900&fm=webp&fit=crop",
     ];
 
     React.useEffect(() => {
@@ -120,7 +120,7 @@ const FeaturedProjects: React.FC = () => {
 
                     <div className="relative bg-[#dfe5eb] min-h-[300px] sm:min-h-[450px] overflow-hidden">
                         <img
-                            src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1400&auto=format&fit=crop"
+                            src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1400&fm=webp&fit=crop"
                             alt="Studio 21 Architects studio"
                             className="h-full w-full object-cover"
                         />

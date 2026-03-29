@@ -1,4 +1,6 @@
 import fs from 'fs';
+import path from 'path';
+import sharp from 'sharp';
 import imageKit from '../configs/imageKit.js';
 import Blog from '../models/blog.js';
 import Comment from '../models/comment.js';
@@ -36,6 +38,28 @@ const toRelativeUploadPath = (p) => {
   return 'uploads/' + normalized.split('/').pop();
 };
 
+const convertUploadImageToWebp = async (file) => {
+  if (!file || !file.path) return null;
+
+  const ext = path.extname(file.path).toLowerCase();
+  if (ext === '.webp') return toRelativeUploadPath(file.path);
+
+  const outputPath = path.join(
+    path.dirname(file.path),
+    `${path.basename(file.path, ext)}.webp`
+  );
+
+  await sharp(file.path).webp({ quality: 82 }).toFile(outputPath);
+
+  try {
+    await fs.promises.unlink(file.path);
+  } catch {
+    // If cleanup fails, keep request successful and continue.
+  }
+
+  return toRelativeUploadPath(outputPath);
+};
+
 export const addBlog = async (req, res) => {
   try {
     // Support both raw fields and JSON 'blog'
@@ -49,7 +73,7 @@ export const addBlog = async (req, res) => {
     const imageFile = req.file || (req.files?.image?.[0] || null);
     const videoFile = req.files?.video?.[0] || null;
 
-    const imagePath = imageFile ? toRelativeUploadPath(imageFile.path) : null;
+    const imagePath = imageFile ? await convertUploadImageToWebp(imageFile) : null;
     const videoPath = videoFile ? toRelativeUploadPath(videoFile.path) : null;
 
     const newBlog = await Blog.create({
@@ -274,8 +298,14 @@ export const generateContent = async (req, res) => {
     let imageUrl = null;
     if (imageFile) {
       try {
-        const fileBuffer = fs.readFileSync(imageFile.path);
-        const uploadResp = await imageKit.upload({ file: fileBuffer, fileName: imageFile.originalname, folder: '/blogs' });
+        const relativePath = await convertUploadImageToWebp(imageFile);
+        const absolutePath = relativePath ? path.join(process.cwd(), relativePath) : imageFile.path;
+        const fileBuffer = fs.readFileSync(absolutePath);
+        const uploadResp = await imageKit.upload({
+          file: fileBuffer,
+          fileName: path.basename(absolutePath),
+          folder: '/blogs'
+        });
         imageUrl = uploadResp?.url || null;
       } catch (imgErr) {
         console.error('Image upload failed for generateContent:', imgErr);
