@@ -31,13 +31,13 @@ const CommentTable: React.FC<Props> = ({ comment, fetchComments }) => {
         toast.success('Comment approved');
         fetchComments();
       } else {
-        toast.error(data.message || 'Failed to approve');
+        toast.error(data.message || 'We could not approve this comment right now.');
       }
     } catch (error: unknown) {
       const message =
         (typeof error === 'object' && error && 'response' in error &&
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (error as any).response?.data?.message) || 'Failed to approve';
+          (error as any).response?.data?.message) || 'We could not approve this comment right now.';
       toast.error(message);
     }
   };
@@ -49,13 +49,13 @@ const CommentTable: React.FC<Props> = ({ comment, fetchComments }) => {
         toast.success('Comment deleted');
         fetchComments();
       } else {
-        toast.error(data.message || 'Failed to delete');
+        toast.error(data.message || 'We could not delete this comment right now.');
       }
     } catch (error: unknown) {
       const message =
         (typeof error === 'object' && error && 'response' in error &&
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (error as any).response?.data?.message) || 'Failed to delete';
+          (error as any).response?.data?.message) || 'We could not delete this comment right now.';
       toast.error(message);
     }
   };

@@ -19,13 +19,13 @@ const ListBlog: React.FC = () => {
             if (data.success) {
                 setBlogs(data.blogs);
             } else {
-                toast.error(data.message || 'Failed to fetch blogs');
+                toast.error(data.message || 'We could not load posts right now. Please try again.');
             }
         } catch (error: unknown) {
             const message =
                 (typeof error === 'object' && error && 'response' in error &&
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    (error as any).response?.data?.message) || 'Failed to fetch blogs';
+                    (error as any).response?.data?.message) || 'We could not load posts right now. Please try again.';
             toast.error(message);
         } finally {
             setLoading(false);
@@ -50,6 +50,7 @@ const ListBlog: React.FC = () => {
                         <tr>
                             <th className='px-3 py-2.5'>#</th>
                             <th className='px-3 py-2.5'>Title</th>
+                            <th className='px-3 py-2.5 max-sm:hidden'>Category</th>
                             <th className='px-3 py-2.5 max-sm:hidden'>Date</th>
                             <th className='px-3 py-2.5 max-sm:hidden'>Status</th>
                             <th className='px-3 py-2.5'>Actions</th>
@@ -58,11 +59,11 @@ const ListBlog: React.FC = () => {
                     <tbody>
                         {loading ? (
                             <tr>
-                                <td colSpan={5} className='text-center py-8 text-[#637081]'>Loading post...</td>
+                                <td colSpan={6} className='text-center py-8 text-[#637081]'>Loading post...</td>
                             </tr>
                         ) : blogs.length === 0 ? (
                             <tr>
-                                <td colSpan={5} className='text-center py-8 text-[#637081]'>No post found</td>
+                                <td colSpan={6} className='text-center py-8 text-[#637081]'>No post found</td>
                             </tr>
                         ) : (
                             blogs.map((blog, index) => (

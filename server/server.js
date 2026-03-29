@@ -5,6 +5,7 @@ import fs from 'fs';
 import connectDB from './configs/db.js';
 import adminRouter from './route/adminRoute.js';
 import blogRoute from './route/blogRoute.js';
+import categoryRoute from './route/categoryRoute.js';
 import path from 'path';
 
 // Load environment variables
@@ -102,11 +103,12 @@ if (!fs.existsSync(uploadDir)) {
 app.get('/', (req, res) => res.send('API is working'));
 app.use('/api/admin', adminRouter);
 app.use('/api/blog', blogRoute);
+app.use('/api/category', categoryRoute);
 
 // ------------------ Error Handling ------------------
 app.use((err, req, res, next) => {
   console.error('Global error handler:', err);
-  res.status(500).json({ success: false, message: err.message || 'Internal server error' });
+  res.status(500).json({ success: false, message: 'Something went wrong on our side. Please try again in a moment.' });
 });
 
 if (!isTest) {

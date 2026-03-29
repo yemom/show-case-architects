@@ -43,6 +43,16 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, mobileOpen, onNavigate }) 
               <p className={`text-[10px] font-semibold uppercase tracking-[0.14em] ${collapsed ? 'md:hidden' : ''}`}>All Projects</p>
             </NavLink>
 
+            <NavLink end to='/admin/create-category' className={linkClass} onClick={onNavigate}>
+              <img src={assets.add_icon} alt='' className='w-[13px] h-[13px] ml-0.5' />
+              <p className={`text-[10px] font-semibold uppercase tracking-[0.14em] ${collapsed ? 'md:hidden' : ''}`}>New Category</p>
+            </NavLink>
+
+            <NavLink end to='/admin/edit-category' className={linkClass} onClick={onNavigate}>
+              <img src={assets.list_icon} alt='' className='w-[13px] h-[13px] ml-0.5' />
+              <p className={`text-[10px] font-semibold uppercase tracking-[0.14em] ${collapsed ? 'md:hidden' : ''}`}>Edit Category</p>
+            </NavLink>
+
             <NavLink end to='/admin/comments' className={linkClass} onClick={onNavigate}>
               <img src={assets.comment_icon} alt='' className='w-[13px] h-[13px] ml-0.5' />
               <p className={`text-[10px] font-semibold uppercase tracking-[0.14em] ${collapsed ? 'md:hidden' : ''}`}>Comments</p>

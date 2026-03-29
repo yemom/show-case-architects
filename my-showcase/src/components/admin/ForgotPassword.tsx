@@ -12,7 +12,7 @@ const ForgotPassword: React.FC = () => {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!email) return toast.error('Email required');
+    if (!email) return toast.error('Please enter your email address.');
     try {
       setLoading(true);
       const { data } = await axios.post('/api/admin/forgot-password-code', { email });
@@ -22,7 +22,7 @@ const ForgotPassword: React.FC = () => {
       const message =
         (typeof err === 'object' && err && 'response' in err &&
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (err as any).response?.data?.message) || 'Request failed';
+          (err as any).response?.data?.message) || 'We could not send a reset code right now. Please try again.';
       toast.error(message);
     } finally {
       setLoading(false);

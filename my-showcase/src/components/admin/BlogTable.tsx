@@ -9,6 +9,7 @@ type Blog = {
   title: string;
   createdAt: string | Date;
   isPublished?: boolean;
+  category?: string;
 };
 
 type Props = {
@@ -21,7 +22,7 @@ const BlogTable: React.FC<Props> = ({ blog, fetchBlogs, index }) => {
   const { title, createdAt } = blog;
   const BlogDate = new Date(createdAt);
 
-  const { axios } = useAppContext();
+  const { axios, token } = useAppContext();
 
   const deleteBlog = async () => {
     const isConfirmed = window.confirm('Are you sure you want to delete this blog?');
@@ -55,6 +56,39 @@ const BlogTable: React.FC<Props> = ({ blog, fetchBlogs, index }) => {
     }
   };
 
+  const editCategory = async () => {
+    const current = blog.category || '';
+    const nextCategory = window.prompt('Edit category', current);
+
+    if (nextCategory === null) return;
+
+    const trimmed = nextCategory.trim();
+    if (!trimmed) {
+      toast.error('Category cannot be empty');
+      return;
+    }
+
+    if (trimmed === current.trim()) return;
+
+    try {
+      const { data } = await axios.post(
+        '/api/blog/update-category',
+        { id: blog._id, category: trimmed },
+        { headers: token ? { Authorization: `Bearer ${token}` } : {} }
+      );
+
+      if (data.success) {
+        toast.success(data.message || 'Category updated');
+        await fetchBlogs();
+      } else {
+        toast.error(data.message || 'Failed to update category');
+      }
+    } catch (error: unknown) {
+      const message = getAxiosErrorMessage(error) || 'Failed to update category';
+      toast.error(message);
+    }
+  };
+
   function getAxiosErrorMessage(err: unknown): string | undefined {
     if (typeof err === 'object' && err !== null && 'response' in err) {
       const anyErr = err as { response?: { data?: { message?: string } } };
@@ -72,6 +106,7 @@ const BlogTable: React.FC<Props> = ({ blog, fetchBlogs, index }) => {
     >
       <th className="px-3 py-3 text-[#5f6f80]">{index}</th>
       <td className="px-3 py-3 text-[#1a2329]">{title}</td>
+      <td className="px-3 py-3 text-[#5f6f80] max-sm:hidden">{blog.category || 'Uncategorized'}</td>
       <td className="px-3 py-3 max-sm:hidden text-[#5f6f80]">{BlogDate.toLocaleDateString()}</td>
       <td className="px-3 py-3 max-sm:hidden">
         <p className={blog.isPublished ? 'text-emerald-700' : 'text-amber-700'}>
@@ -85,6 +120,12 @@ const BlogTable: React.FC<Props> = ({ blog, fetchBlogs, index }) => {
             className="border border-[#b86f4e]/55 px-2 py-1 mt-0.5 text-[#7d442f] hover:bg-[#b86f4e]/12 transition-colors cursor-pointer"
           >
             {blog.isPublished ? 'unpublish' : 'publish'}
+          </button>
+          <button
+            onClick={editCategory}
+            className="border border-[#a9bacd] px-2 py-1 mt-0.5 text-[#49596b] hover:bg-[#a9bacd]/20 transition-colors cursor-pointer"
+          >
+            edit category
           </button>
           <img
             src={assets.cross_icon}

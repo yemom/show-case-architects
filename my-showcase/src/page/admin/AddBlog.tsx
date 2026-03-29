@@ -12,6 +12,8 @@ declare global {
     }
 }
 
+const DEFAULT_CATEGORIES = ['Living Room', 'Bedroom', 'Kitchen', 'Office', 'Outdoor'];
+
 const AddBlog: React.FC = () => {
     const { axios, token } = useAppContext();
 
@@ -29,6 +31,7 @@ const AddBlog: React.FC = () => {
     const [title, setTitle] = useState('');
     const [subTitle, setSubTitle] = useState('');
     const [category, setCategory] = useState('');
+    const [categoryOptions, setCategoryOptions] = useState<string[]>(DEFAULT_CATEGORIES);
     const [isPublished, setIsPublished] = useState(false);
 
     useEffect(() => {
@@ -46,9 +49,27 @@ const AddBlog: React.FC = () => {
         }
     }, []);
 
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const { data } = await axios.get('/api/category');
+                if (data.success) {
+                    const fetched = Array.isArray(data.categories)
+                        ? data.categories.map((item: { name?: string }) => String(item?.name || '').trim()).filter(Boolean)
+                        : [];
+                    setCategoryOptions(Array.from(new Set([...DEFAULT_CATEGORIES, ...fetched])));
+                }
+            } catch {
+                // Keep defaults if category service is unavailable.
+            }
+        };
+
+        fetchCategories();
+    }, [axios]);
+
     const generateContent = async () => {
         if (!USE_GENERATE_ENDPOINT) return;
-        if (!title.trim()) return toast.error('Enter a title first');
+        if (!title.trim()) return toast.error('Please enter a title first.');
         try {
             setLoadingAI(true);
             const formData = new FormData();
@@ -66,11 +87,11 @@ const AddBlog: React.FC = () => {
                     quillRef.current.root.innerHTML = parsed;
                 }
             } else {
-                toast.error(data.message || 'Failed to generate content');
+                toast.error(data.message || 'We could not generate content right now. Please try again.');
             }
         } catch (err: unknown) {
             const e = err as { response?: { data?: { message?: string } } };
-            toast.error(e.response?.data?.message || 'Request failed');
+            toast.error(e.response?.data?.message || 'We could not generate content right now. Please try again.');
         } finally {
             setLoadingAI(false);
         }
@@ -81,13 +102,14 @@ const AddBlog: React.FC = () => {
         if (isAdding) return;
 
         const description = quillRef.current?.root?.innerHTML?.trim() || '';
-        if (!title.trim()) return toast.error('Title required');
-        if (!subTitle.trim()) return toast.error('Subtitle required');
-        if (!description || description === '<p><br></p>') return toast.error('Description required');
-        if (!category) return toast.error('Select a category');
+        const normalizedCategory = category.trim();
+        if (!title.trim()) return toast.error('Please enter a project title.');
+        if (!subTitle.trim()) return toast.error('Please enter a project subtitle.');
+        if (!description || description === '<p><br></p>') return toast.error('Please add a project description.');
+        if (!normalizedCategory) return toast.error('Please choose or enter a category.');
 
         const MAX_VIDEO_BYTES = 500 * 1024 * 1024;
-        if (video && video.size > MAX_VIDEO_BYTES) return toast.error('Video too large (limit 500MB)');
+        if (video && video.size > MAX_VIDEO_BYTES) return toast.error('The selected video is too large. Maximum size is 500MB.');
 
         try {
             setIsAdding(true);
@@ -95,7 +117,7 @@ const AddBlog: React.FC = () => {
             formData.append('title', title);
             formData.append('subTitle', subTitle);
             formData.append('description', description);
-            formData.append('category', category);
+            formData.append('category', normalizedCategory);
             formData.append('isPublished', String(isPublished));
             if (image) formData.append('image', image);
             if (video) formData.append('video', video);
@@ -121,11 +143,11 @@ const AddBlog: React.FC = () => {
                     window.refreshBlogList();
                 }
             } else {
-                toast.error(data?.message || 'Failed to add blog');
+                toast.error(data?.message || 'We could not publish this project right now. Please try again.');
             }
         } catch (err: unknown) {
             const e = err as { response?: { data?: { message?: string } } };
-            toast.error(e.response?.data?.message || 'Request failed');
+            toast.error(e.response?.data?.message || 'We could not publish this project right now. Please try again.');
         } finally {
             setIsAdding(false);
         }
@@ -175,14 +197,18 @@ const AddBlog: React.FC = () => {
                 </div>
 
                 <p className='mt-4 font-medium text-[#1a2329]'>Project Category</p>
-                <select value={category} onChange={(e) => setCategory(e.target.value)} className='mt-2 px-3 h-11 border text-[#1a2329] border-[#a9bacd]/55 bg-[#f4f7fb] outline-none'>
-                    <option value=''>Select category</option>
-                    <option value='Living Room'>Living Room</option>
-                    <option value='Bedroom'>Bedroom</option>
-                    <option value='Kitchen'>Kitchen</option>
-                    <option value='Office'>Office</option>
-                    <option value='Outdoor'>Outdoor</option>
-                </select>
+                <input
+                    list='project-categories'
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    placeholder='Select or type a category'
+                    className='w-full max-w-lg mt-2 px-3 h-11 border text-[#1a2329] border-[#a9bacd]/55 bg-[#f4f7fb] outline-none'
+                />
+                <datalist id='project-categories'>
+                    {categoryOptions.map((item) => (
+                        <option key={item} value={item} />
+                    ))}
+                </datalist>
 
                 <div className='flex gap-2 mt-4 items-center text-[#4f5f71]'>
                     <p>Publish Now</p>

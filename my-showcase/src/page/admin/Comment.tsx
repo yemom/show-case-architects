@@ -25,13 +25,13 @@ const Comment: React.FC = () => {
             if (data.success) {
                 setComments(data.comments);
             } else {
-                toast.error(data.message || 'Failed to fetch comments');
+                toast.error(data.message || 'We could not load comments right now. Please try again.');
             }
         } catch (error: unknown) {
             const message =
                 (typeof error === 'object' && error && 'response' in error &&
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    (error as any).response?.data?.message) || 'Failed to fetch comments';
+                    (error as any).response?.data?.message) || 'We could not load comments right now. Please try again.';
             toast.error(message);
         }
     }, [axios, token]);

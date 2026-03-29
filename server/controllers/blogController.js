@@ -73,7 +73,7 @@ export const addBlog = async (req, res) => {
     });
   } catch (err) {
     console.error('addBlog error:', err);
-    res.status(500).json({ success: false, message: err.message || 'Server error' });
+    res.status(500).json({ success: false, message: "We couldn't publish this post right now. Please try again." });
   }
 };
 
@@ -93,7 +93,7 @@ export const getAllBlogs = async (req, res) => {
     res.json({ success: true, message: 'Blogs fetched successfully', blogs: formatted });
   } catch (error) {
     console.error('Error fetching blogs:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ success: false, message: 'We could not load posts right now. Please try again.' });
   }
 };
 
@@ -108,7 +108,7 @@ export const getBlogById = async (req, res) => {
     const blog = await Blog.findById(blogId);
 
     if (!blog) {
-      return res.status(404).json({ message: "Blog not found" });
+      return res.status(404).json({ success: false, message: 'This post could not be found.' });
     }
 
     const BASE = getReqBase(req);
@@ -121,7 +121,7 @@ export const getBlogById = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ success: false, message: 'We could not load this post right now. Please try again.' });
   }
 };
 
@@ -135,7 +135,7 @@ export const deleteBlog = async (req, res) => {
     res.json({ success: true, message: "Blog deleted successfully" });
   } catch (error) {
     console.error("Error deleting blog:", error);
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ success: false, message: 'We could not delete this post right now. Please try again.' });
   }
 }
 export const onTogglePublish = async (req, res) => {
@@ -147,7 +147,42 @@ export const onTogglePublish = async (req, res) => {
     res.json({ success: true, message: "Blog publish status updated successfully", isPublished: blog.isPublished });
   } catch (error) {
     console.error("Error updating blog publish status:", error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ success: false, message: 'We could not update publish status right now. Please try again.' });
+  }
+}
+
+export const updateBlogCategory = async (req, res) => {
+  try {
+    const { id, category } = req.body || {};
+    const nextCategory = String(category || '').trim();
+
+    if (!id || !nextCategory) {
+      return res.status(400).json({ success: false, message: 'Blog id and category are required' });
+    }
+
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      id,
+      { category: nextCategory },
+      { new: true }
+    );
+
+    if (!updatedBlog) {
+      return res.status(404).json({ success: false, message: 'Blog not found' });
+    }
+
+    const BASE = getReqBase(req);
+    return res.json({
+      success: true,
+      message: 'Blog category updated successfully',
+      blog: {
+        ...updatedBlog.toObject(),
+        image: toAbsoluteUrl(BASE, updatedBlog.image),
+        video: toAbsoluteUrl(BASE, updatedBlog.video),
+      },
+    });
+  } catch (error) {
+    console.error('Error updating blog category:', error);
+    return res.status(500).json({ success: false, message: 'We could not update the category right now. Please try again.' });
   }
 }
 export const updateBlog = async (req, res) => {
@@ -190,7 +225,7 @@ export const updateBlog = async (req, res) => {
     res.json({ success: true, message: "Blog updated successfully", blog: updatedBlog });
   } catch (error) {
     console.error("Error updating blog:", error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ success: false, message: 'We could not update this post right now. Please try again.' });
   }
 }
 
@@ -213,7 +248,7 @@ export const addComment = async (req, res) => {
     res.json({ success: true, message: "Comment added successfully" });
   } catch (error) {
     console.error("Error adding comment:", error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ success: false, message: 'We could not add your comment right now. Please try again.' });
   }
 }
 
@@ -225,7 +260,7 @@ export const getComments = async (req, res) => {
     res.json({ success: true, comments });
   } catch (error) {
     console.error("Error fetching comments:", error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ success: false, message: 'We could not load comments right now. Please try again.' });
   }
 }
 
@@ -260,6 +295,6 @@ export const generateContent = async (req, res) => {
     res.json({ success: true, content });
   } catch (error) {
     console.error("Error generating content:", error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ success: false, message: 'Content generation is unavailable right now. Please try again.' });
   }
 }

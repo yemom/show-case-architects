@@ -14,6 +14,8 @@ import AdminAddBlog from "./page/admin/AddBlog.tsx";
 import AdminListBlog from "./page/admin/ListBlog.tsx";
 import AdminComment from "./page/admin/Comment.tsx";
 import AdminRequests from "./page/admin/AdminRequests.tsx";
+import AdminCreateCategory from "./page/admin/CreateCategory.tsx";
+import AdminEditCategory from "./page/admin/EditCategory.tsx";
 import AdminLogin from "./components/admin/Login.tsx";
 import AdminForgotPassword from "./components/admin/ForgotPassword.tsx";
 import AdminResetPassword from "./components/admin/ResetPassword.tsx";
@@ -25,6 +27,8 @@ const router = createBrowserRouter([
   { path: "/admin/Addblog", element: <Navigate to="/admin/add-blog" replace /> },
   { path: "/admin/ListBlog", element: <Navigate to="/admin/list-blog" replace /> },
   { path: "/admin/Comment", element: <Navigate to="/admin/comments" replace /> },
+  { path: "/admin/CreateCategory", element: <Navigate to="/admin/create-category" replace /> },
+  { path: "/admin/EditCategory", element: <Navigate to="/admin/edit-category" replace /> },
   { path: "/", element: <Index /> },
   { path: "/about", element: <About /> },
   { path: "/services", element: <Services /> },
@@ -50,6 +54,8 @@ const router = createBrowserRouter([
       { index: true, element: <AdminDashboard /> },
       { path: "add-blog", element: <AdminAddBlog /> },
       { path: "list-blog", element: <AdminListBlog /> },
+      { path: "create-category", element: <AdminCreateCategory /> },
+      { path: "edit-category", element: <AdminEditCategory /> },
       { path: "comments", element: <AdminComment /> },
       { path: "requests", element: <AdminRequests /> },
     ],

@@ -30,13 +30,13 @@ const Login: React.FC = () => {
                 ? (error as any).response?.status
                 : undefined;
             if (status === 404) {
-                toast.error('Login endpoint not found (check backend /api/admin/login)');
+                toast.error('Login service is temporarily unavailable. Please try again shortly.');
             } else {
                 const message = (typeof error === 'object' && error && 'response' in error)
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     ? (error as any).response?.data?.message
                     : undefined;
-                toast.error(message || 'Login failed');
+                toast.error(message || 'We could not sign you in right now. Please try again.');
             }
         }
     };

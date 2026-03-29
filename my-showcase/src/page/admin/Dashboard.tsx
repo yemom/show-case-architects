@@ -44,7 +44,7 @@ const Dashboard: React.FC = () => {
     const fetchDashboardData = useCallback(async () => {
         if (!token) {
             navigate('/admin');
-            toast.error('Please login to access admin panel');
+            toast.error('Please sign in to access the admin dashboard.');
             return;
         }
         try {
@@ -54,7 +54,7 @@ const Dashboard: React.FC = () => {
             if (data.success) {
                 setDashboardData(data.dashboardData);
             } else {
-                toast.error(data.message || 'Failed to fetch dashboard data');
+                toast.error(data.message || 'We could not load dashboard data right now.');
             }
         } catch (error: unknown) {
             const status = (typeof error === 'object' && error && 'response' in error)
@@ -62,7 +62,7 @@ const Dashboard: React.FC = () => {
                 ? (error as any).response?.status
                 : undefined;
             if (status === 401) {
-                toast.error('Session expired. Please login again.');
+                toast.error('Your session has expired. Please sign in again.');
                 setToken('');
                 navigate('/admin');
             } else {
@@ -70,7 +70,7 @@ const Dashboard: React.FC = () => {
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     ? (error as any).response?.data?.message
                     : undefined;
-                toast.error(message || 'Failed to fetch dashboard data');
+                toast.error(message || 'We could not load dashboard data right now.');
             }
         }
     }, [axios, token, navigate, setToken]);

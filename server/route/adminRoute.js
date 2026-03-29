@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import multer from 'multer';
 import { addBlog } from '../controllers/blogController.js';
-import { adminLogin, adminSignup,  getDashboard, getAllComments, deleteCommentById, ApprovedCommentById, listAdmins, approveAdmin, requestAdminAccess, deleteAdmin, forgotPassword, resetPassword, forgotPasswordCode, resetPasswordWithCode, getAllBlogs as adminGetAllBlogs, getCurrentAdmin } from '../controllers/adminController.js';
+import { adminLogin, adminSignup,  getDashboard, getAllComments, deleteCommentById, ApprovedCommentById, listAdmins, approveAdmin, requestAdminAccess, deleteAdmin, updateAdmin, forgotPassword, resetPassword, forgotPasswordCode, resetPasswordWithCode, getAllBlogs as adminGetAllBlogs, getCurrentAdmin } from '../controllers/adminController.js';
 import auth from '../midleware/auth.js';
 import Comment from '../models/comment.js';
 
@@ -61,18 +61,23 @@ router.post('/reset-password-code', resetPasswordWithCode);
 // Super-admin protected endpoints
 router.get('/admins', auth, async (req, res, next) => {
   // Only super admin can list
-  if (req.admin?.role !== 'super') return res.status(403).json({ success: false, message: 'Forbidden' });
+  if (req.admin?.role !== 'super') return res.status(403).json({ success: false, message: 'Only super admins can access this page.' });
   return listAdmins(req, res, next);
 });
 
 router.post('/approve-admin', auth, async (req, res, next) => {
-  if (req.admin?.role !== 'super') return res.status(403).json({ success: false, message: 'Forbidden' });
+  if (req.admin?.role !== 'super') return res.status(403).json({ success: false, message: 'Only super admins can perform this action.' });
   return approveAdmin(req, res, next);
 });
 
 router.post('/delete-admin', auth, async (req, res, next) => {
-  if (req.admin?.role !== 'super') return res.status(403).json({ success: false, message: 'Forbidden' });
+  if (req.admin?.role !== 'super') return res.status(403).json({ success: false, message: 'Only super admins can perform this action.' });
   return deleteAdmin(req, res, next);
+});
+
+router.post('/update-admin', auth, async (req, res, next) => {
+  if (req.admin?.role !== 'super') return res.status(403).json({ success: false, message: 'Only super admins can perform this action.' });
+  return updateAdmin(req, res, next);
 });
 
 // Dashboard
@@ -89,7 +94,7 @@ router.get('/comment', auth, async (req, res) => {
     res.json({ success: true, comments });
   } catch (error) {
     console.error("Error fetching comments:", error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ success: false, message: 'We could not load comments right now. Please try again.' });
   }
 });
 

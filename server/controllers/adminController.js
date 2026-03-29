@@ -27,7 +27,7 @@ export const adminSignup = async (req, res) => {
   try {
     const { email, password } = req.body || {};
     if (!email || !password) {
-      return res.status(400).json({ success: false, message: 'Email & password required' });
+      return res.status(400).json({ success: false, message: 'Please enter both email and password.' });
     }
     // Do NOT auto-create or auto-approve admins via this endpoint.
     // Instead create a pending admin request that must be approved by a super admin.
@@ -48,7 +48,7 @@ export const adminSignup = async (req, res) => {
     return res.json({ success: true, message: 'Admin access request submitted. A super admin must approve your account.' });
   } catch (err) {
     console.error('adminSignup error:', err);
-    res.status(500).json({ success: false, message: 'Server error' });
+    res.status(500).json({ success: false, message: 'Something went wrong on our side. Please try again.' });
   }
 };
 
@@ -57,7 +57,7 @@ export const adminLogin = async (req, res) => {
     const { email, password } = req.body || {};
 
     if (!email || !password) {
-      return res.status(400).json({ success: false, message: 'Email & password required' });
+      return res.status(400).json({ success: false, message: 'Please enter both email and password.' });
     }
 
     // Normalize to avoid whitespace/case issues
@@ -76,7 +76,7 @@ export const adminLogin = async (req, res) => {
     const admin = await Admin.findOne({ email: inputEmail });
     if (admin) {
       const ok = await bcrypt.compare(inputPassword, admin.password);
-      if (!ok) return res.status(401).json({ success: false, message: 'Invalid credentials' });
+      if (!ok) return res.status(401).json({ success: false, message: 'Incorrect email or password.' });
       if (!admin.isApproved) {
         return res.status(403).json({ success: false, message: 'Your account is pending approval by a super admin.' });
       }
@@ -84,10 +84,10 @@ export const adminLogin = async (req, res) => {
       return res.json({ success: true, message: 'Login successful', token });
     }
 
-    return res.status(401).json({ success: false, message: 'Invalid credentials' });
+    return res.status(401).json({ success: false, message: 'Incorrect email or password.' });
   } catch (err) {
     console.error('adminLogin error:', err);
-    res.status(500).json({ success: false, message: 'Server error' });
+    res.status(500).json({ success: false, message: 'Something went wrong on our side. Please try again.' });
   }
 };
 
@@ -116,7 +116,7 @@ export const getCurrentAdmin = async (req, res) => {
     });
   } catch (err) {
     console.error('getCurrentAdmin error:', err);
-    res.status(500).json({ success: false, message: 'Server error' });
+    res.status(500).json({ success: false, message: 'Unable to load your profile right now. Please try again.' });
   }
 };
 
@@ -126,54 +126,104 @@ export const listAdmins = async (req, res) => {
     res.json({ success: true, admins });
   } catch (err) {
     console.error('listAdmins error:', err);
-    res.status(500).json({ success: false, message: 'Server error' });
+    res.status(500).json({ success: false, message: 'We could not load admin accounts right now. Please try again.' });
   }
 };
 
 export const approveAdmin = async (req, res) => {
   try {
     const { id } = req.body || {};
-    if (!id) return res.status(400).json({ success: false, message: 'Admin id required' });
+    if (!id) return res.status(400).json({ success: false, message: 'Please select an admin account.' });
     const admin = await Admin.findByIdAndUpdate(id, { isApproved: true }, { new: true }).select('-password');
-    if (!admin) return res.status(404).json({ success: false, message: 'Admin not found' });
+    if (!admin) return res.status(404).json({ success: false, message: 'We could not find that admin account.' });
     res.json({ success: true, admin });
   } catch (err) {
     console.error('approveAdmin error:', err);
-    res.status(500).json({ success: false, message: 'Server error' });
+    res.status(500).json({ success: false, message: 'Could not approve this admin right now. Please try again.' });
   }
 };
 
 export const deleteAdmin = async (req, res) => {
   try {
     const { id } = req.body || {};
-    if (!id) return res.status(400).json({ success: false, message: 'Admin id required' });
+    if (!id) return res.status(400).json({ success: false, message: 'Please select an admin account.' });
 
     const admin = await Admin.findById(id);
-    if (!admin) return res.status(404).json({ success: false, message: 'Admin not found' });
+    if (!admin) return res.status(404).json({ success: false, message: 'We could not find that admin account.' });
 
     // Prevent deleting super admins or the .env super account
     const envEmail = String(ADMIN_EMAIL || '').trim().toLowerCase();
     if (admin.role === 'super' || admin.email.toLowerCase() === envEmail) {
-      return res.status(403).json({ success: false, message: 'Cannot delete a super admin' });
+      return res.status(403).json({ success: false, message: 'This admin account is protected and cannot be deleted.' });
     }
 
     await Admin.findByIdAndDelete(id);
     res.json({ success: true, message: 'Admin deleted successfully' });
   } catch (err) {
     console.error('deleteAdmin error:', err);
-    res.status(500).json({ success: false, message: 'Server error' });
+    res.status(500).json({ success: false, message: 'Could not delete this admin right now. Please try again.' });
+  }
+};
+
+export const updateAdmin = async (req, res) => {
+  try {
+    const { id, email, role, isApproved } = req.body || {};
+    if (!id) return res.status(400).json({ success: false, message: 'Please select an admin account.' });
+
+    const admin = await Admin.findById(id);
+    if (!admin) return res.status(404).json({ success: false, message: 'We could not find that admin account.' });
+
+    const envEmail = String(ADMIN_EMAIL || '').trim().toLowerCase();
+    if (admin.role === 'super' || admin.email.toLowerCase() === envEmail) {
+      return res.status(403).json({ success: false, message: 'This admin account is protected and cannot be edited.' });
+    }
+
+    const updates = {};
+
+    if (typeof email === 'string') {
+      const normalizedEmail = email.trim().toLowerCase();
+      if (!normalizedEmail) {
+        return res.status(400).json({ success: false, message: 'Please enter a valid email address.' });
+      }
+
+      if (normalizedEmail !== admin.email.toLowerCase()) {
+        const exists = await Admin.findOne({ _id: { $ne: id }, email: normalizedEmail });
+        if (exists) {
+          return res.status(409).json({ success: false, message: 'That email is already used by another admin.' });
+        }
+      }
+
+      updates.email = normalizedEmail;
+    }
+
+    if (typeof role === 'string') {
+      if (!['admin', 'super'].includes(role)) {
+        return res.status(400).json({ success: false, message: 'Role must be admin or super' });
+      }
+      updates.role = role;
+    }
+
+    if (typeof isApproved === 'boolean') {
+      updates.isApproved = isApproved;
+    }
+
+    const updated = await Admin.findByIdAndUpdate(id, updates, { new: true }).select('-password');
+    return res.json({ success: true, message: 'Admin updated successfully', admin: updated });
+  } catch (err) {
+    console.error('updateAdmin error:', err);
+    res.status(500).json({ success: false, message: 'Could not update this admin right now. Please try again.' });
   }
 };
 
 export const requestAdminAccess = async (req, res) => {
   try {
     const { email, password } = req.body || {};
-    if (!email || !password) return res.status(400).json({ success: false, message: 'Email & password required' });
+    if (!email || !password) return res.status(400).json({ success: false, message: 'Please enter both email and password.' });
 
     // If no admins exist yet, instruct to use /signup for the first super admin
     const count = await Admin.countDocuments();
     if (count === 0) {
-      return res.status(400).json({ success: false, message: 'No super admin exists. Use /api/admin/signup to submit the initial admin access request.' });
+      return res.status(400).json({ success: false, message: 'No super admin is available yet. Please contact support to set up the first admin account.' });
     }
 
     const existing = await Admin.findOne({ email });
@@ -193,7 +243,7 @@ export const requestAdminAccess = async (req, res) => {
     return res.json({ success: true, message: 'Admin access request submitted. A super admin must approve your account.' });
   } catch (err) {
     console.error('requestAdminAccess error:', err);
-    res.status(500).json({ success: false, message: 'Server error' });
+    res.status(500).json({ success: false, message: 'We could not submit your request right now. Please try again.' });
   }
 };
 
@@ -202,7 +252,7 @@ export const requestAdminAccess = async (req, res) => {
 export const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body || {};
-    if (!email) return res.status(400).json({ success: false, message: 'Email required' });
+    if (!email) return res.status(400).json({ success: false, message: 'Please enter your email address.' });
     const admin = await Admin.findOne({ email: String(email).trim().toLowerCase() });
     if (!admin) {
       // Do not reveal that email doesn't exist
@@ -220,7 +270,7 @@ export const forgotPassword = async (req, res) => {
     return res.json({ success: true, message: 'If that email exists, a reset link has been generated.', resetLink: process.env.NODE_ENV==='development'? resetLink: undefined });
   } catch (err) {
     console.error('forgotPassword error:', err);
-    res.status(500).json({ success: false, message: 'Server error' });
+    res.status(500).json({ success: false, message: 'We could not process your request right now. Please try again.' });
   }
 };
 
@@ -228,9 +278,9 @@ export const forgotPassword = async (req, res) => {
 export const resetPassword = async (req, res) => {
   try {
     const { email, token, password } = req.body || {};
-    if (!email || !token || !password) return res.status(400).json({ success: false, message: 'Email, token & new password required' });
+    if (!email || !token || !password) return res.status(400).json({ success: false, message: 'Please provide email, reset token, and a new password.' });
     const admin = await Admin.findOne({ email: String(email).trim().toLowerCase(), resetPasswordToken: token, resetPasswordExpires: { $gt: Date.now() } });
-    if (!admin) return res.status(400).json({ success: false, message: 'Invalid or expired token' });
+    if (!admin) return res.status(400).json({ success: false, message: 'This reset link is invalid or has expired. Please request a new one.' });
     admin.password = await bcrypt.hash(password, 10);
     admin.resetPasswordToken = undefined;
     admin.resetPasswordExpires = undefined;
@@ -238,7 +288,7 @@ export const resetPassword = async (req, res) => {
     return res.json({ success: true, message: 'Password reset successful' });
   } catch (err) {
     console.error('resetPassword error:', err);
-    res.status(500).json({ success: false, message: 'Server error' });
+    res.status(500).json({ success: false, message: 'Could not reset your password right now. Please try again.' });
   }
 };
 
@@ -247,7 +297,7 @@ export const resetPassword = async (req, res) => {
 export const forgotPasswordCode = async (req, res) => {
   try {
     const { email } = req.body || {};
-    if (!email) return res.status(400).json({ success: false, message: 'Email required' });
+    if (!email) return res.status(400).json({ success: false, message: 'Please enter your email address.' });
     const admin = await Admin.findOne({ email: String(email).trim().toLowerCase() });
     // Always respond success style to avoid enumeration
     if (!admin) return res.json({ success: true, message: 'If that email exists, a reset code has been sent.' });
@@ -263,7 +313,7 @@ export const forgotPasswordCode = async (req, res) => {
     return res.json({ success: true, message: 'If that email exists, a reset code has been sent.' });
   } catch (err) {
     console.error('forgotPasswordCode error:', err);
-    res.status(500).json({ success: false, message: 'Server error' });
+    res.status(500).json({ success: false, message: 'We could not send a reset code right now. Please try again.' });
   }
 };
 
@@ -271,13 +321,13 @@ export const forgotPasswordCode = async (req, res) => {
 export const resetPasswordWithCode = async (req, res) => {
   try {
     const { email, code, password } = req.body || {};
-    if (!email || !code || !password) return res.status(400).json({ success: false, message: 'Email, code & new password required' });
+    if (!email || !code || !password) return res.status(400).json({ success: false, message: 'Please provide email, reset code, and a new password.' });
     const admin = await Admin.findOne({
       email: String(email).trim().toLowerCase(),
       resetPasswordCode: code,
       resetPasswordCodeExpires: { $gt: Date.now() }
     });
-    if (!admin) return res.status(400).json({ success: false, message: 'Invalid or expired code' });
+    if (!admin) return res.status(400).json({ success: false, message: 'This reset code is invalid or has expired. Please request a new one.' });
     admin.password = await bcrypt.hash(password, 10);
     admin.resetPasswordCode = undefined;
     admin.resetPasswordCodeExpires = undefined;
@@ -285,7 +335,7 @@ export const resetPasswordWithCode = async (req, res) => {
     return res.json({ success: true, message: 'Password reset successful' });
   } catch (err) {
     console.error('resetPasswordWithCode error:', err);
-    res.status(500).json({ success: false, message: 'Server error' });
+    res.status(500).json({ success: false, message: 'Could not reset your password right now. Please try again.' });
   }
 };
 
@@ -322,7 +372,7 @@ export const addBlog = async (req, res) => {
     });
   } catch (err) {
     console.error("addBlog error:", err);
-    res.status(500).json({ success: false, message: err.message || "Server error" });
+    res.status(500).json({ success: false, message: "We couldn't publish this post right now. Please try again." });
   }
 };
 
@@ -343,7 +393,7 @@ export const getAllBlogs = async (req, res) => {
       res.json({ success: true, message: 'Blogs fetched successfully', blogs: formatted });
     } catch (error) {
       console.error('Error fetching blogs:', error);
-      res.status(500).json({ message: 'Internal server error' });
+      res.status(500).json({ success: false, message: 'We could not load posts right now. Please try again.' });
     }
   };
   
@@ -356,7 +406,7 @@ export const getAllComments = async (req, res) => {
         res.json({ success: true, comments });
     } catch (error) {
         console.error("Error fetching comments:", error);
-        res.status(500).json({ message: "Internal server error" });
+      res.status(500).json({ success: false, message: 'We could not load comments right now. Please try again.' });
     }
 }
 
@@ -384,7 +434,7 @@ export const deleteCommentById = async (req, res) => {
         res.json({ success: true, message: "Comment deleted successfully" });
     } catch (error) {
         console.error("Error deleting comment:", error);
-        res.status(500).json({ message: "Internal server error" });
+      res.status(500).json({ success: false, message: 'We could not delete this comment right now. Please try again.' });
     }
 }
 
@@ -395,6 +445,6 @@ export const ApprovedCommentById = async (req, res) => {
         res.json({ success: true, message: "Comment update successfully" });
     } catch (error) {
         console.error("Error deleting comment:", error);
-        res.status(500).json({ message: "Internal server error" });
+      res.status(500).json({ success: false, message: 'We could not update this comment right now. Please try again.' });
     }
 }

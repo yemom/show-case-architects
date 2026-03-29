@@ -13,7 +13,7 @@ const Signup: React.FC = () => {
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (!email || !password) return toast.error('Email & password required');
+        if (!email || !password) return toast.error('Please enter both email and password.');
         try {
             const { data } = await axios.post('/api/admin/request-access', { email, password });
             if (data.success) {
@@ -23,12 +23,12 @@ const Signup: React.FC = () => {
                 setSubmitted(true);
                 return;
             }
-            toast.error(data.message || 'Request failed');
+            toast.error(data.message || 'We could not submit your request right now. Please try again.');
         } catch (error: unknown) {
             const message = (typeof error === 'object' && error && 'response' in error)
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                ? (error as any).response?.data?.message || 'Request failed'
-                : 'Request failed';
+                ? (error as any).response?.data?.message || 'We could not submit your request right now. Please try again.'
+                : 'We could not submit your request right now. Please try again.';
             toast.error(message);
         }
     };

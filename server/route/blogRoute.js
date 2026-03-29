@@ -1,6 +1,6 @@
 
 import express from "express";
-import { addBlog, addComment, deleteBlog, generateContent, getAllBlogs, getBlogById, getComments, onTogglePublish } from '../controllers/blogController.js'
+import { addBlog, addComment, deleteBlog, generateContent, getAllBlogs, getBlogById, getComments, onTogglePublish, updateBlogCategory } from '../controllers/blogController.js'
 import upload from "../midleware/multter.js";
 import auth from "../midleware/auth.js";
 
@@ -14,7 +14,7 @@ const uploadBlogMedia = (req, res, next) => {
     ])(req, res, (err) => {
         if (err) {
             console.error('Multer error:', err);
-            return res.status(400).json({ success: false, message: err.message });
+            return res.status(400).json({ success: false, message: 'We could not process the selected file. Please check the file type and size.' });
         }
         next();
     });
@@ -26,6 +26,7 @@ blogRoute.post("/add-comment", addComment);
 blogRoute.get("/comment/:blogId", getComments);
 blogRoute.delete("/delete", auth, deleteBlog);
 blogRoute.post("/toggle-publish", auth, onTogglePublish);
+blogRoute.post('/update-category', auth, updateBlogCategory);
 blogRoute.get("/:blogId", getBlogById);
  // Accept optional image/video when generating content; reuse uploadBlogMedia to parse multipart
  blogRoute.post("/generate-content", auth, uploadBlogMedia, generateContent);
